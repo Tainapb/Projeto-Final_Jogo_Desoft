@@ -29,9 +29,9 @@ while True:
             sys.exit()
         # permitindo movimentação pelo teclado
         if event.type==pygame.KEYDOWN:
-            if event.key==pygame.K_w: 
+            if event.key==pygame.K_UP: 
                 y=y-20
-            if event.key==pygame.K_s:
+            if event.key==pygame.K_DOWN:
                 y=y+20 
             if event.key==pygame.K_SPACE: 
                 print("pular")   
