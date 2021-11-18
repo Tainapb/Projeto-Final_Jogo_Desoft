@@ -26,7 +26,12 @@ class Gelatina(pygame.sprite.Sprite):
             if self.rect.y<self.pos_y_inicial: 
                 self.rect.y+=5
             else: 
-                self.rect.y=self.pos_y_inicial  
+                self.rect.y=self.pos_y_inicial 
+        #mantem a geleia dentro da tela  
+        if self.rect.right> larg: 
+            self.rect.right=larg+10
+        if self.rect.left <0: 
+            self.rect.left=-20
 class Chao(pygame.sprite.Sprite): 
     def __init__(self, posicao_x, imagem): 
         pygame.sprite.Sprite.__init__(self)
