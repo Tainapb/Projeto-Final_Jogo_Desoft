@@ -87,7 +87,11 @@ while True:
                 gelatina.rect.x-=30
             if event.key==pygame.K_SPACE: 
                 gelatina.pular()
-        
+    #movimenta a geleia caso a tecla fique pressionada
+    if pygame.key.get_pressed()[K_RIGHT]: 
+        gelatina.rect.x+=5 
+    if pygame.key.get_pressed()[K_LEFT]: 
+        gelatina.rect.x-=5
     tela.blit(imagem_fundo, (0,0))
     todas.draw(tela)
     pygame.display.update() 
