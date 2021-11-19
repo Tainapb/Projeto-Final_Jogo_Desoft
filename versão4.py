@@ -6,12 +6,12 @@ from pygame.locals import*
 class Gelatina(pygame.sprite.Sprite): 
     def __init__(self,imagem):
         pygame.sprite.Sprite.__init__(self)
-        self.pos_y_inicial= alt-120 #referencia        
+        self.pos_y_inicial= alt-105 #referencia        
         self.pulo=False
         self.image=imagem 
         self.image=pygame.transform.scale(imagem, (120,100))
         self.rect=self.image.get_rect()
-        self.rect.center=(50,50)
+        self.rect.center=(30,30)
         self.rect.x=-20
         
     def pular (self): 
@@ -26,8 +26,7 @@ class Gelatina(pygame.sprite.Sprite):
             if self.rect.y<self.pos_y_inicial: 
                 self.rect.y+=5
             else: 
-                self.rect.y=self.pos_y_inicial 
-        #mantem a geleia dentro da tela  
+                self.rect.y=self.pos_y_inicial  
         if self.rect.right> larg: 
             self.rect.right=larg+10
         if self.rect.left <0: 
@@ -36,16 +35,16 @@ class Chao(pygame.sprite.Sprite):
     def __init__(self, posicao_x, imagem): 
         pygame.sprite.Sprite.__init__(self)
         self.image= imagem
-        self.image=pygame.transform.scale(self.image, (32*2, 32*2))
+        self.image=pygame.transform.scale(self.image, (500,100))
         self.rect=self.image.get_rect()
-        self.rect.y=alt-50
-        self.rect.x=posicao_x*65
+        self.rect.y=alt-75
+        self.rect.x=0#posicao_x
     def update(self): 
         if  self.rect.topright[0]<0: 
             self.rect.x=larg
-        self.rect.x-=5 #velocidade
-pygame.init()
+        #self.rect.x-=5 #velocidade
 
+pygame.init()
 #cores 
 cinza =(127,127,127)
 rosa=(200, 0, 100)
@@ -62,15 +61,15 @@ image_geleia= pygame.image.load(os.path.join(direct_imag, "geleia.png" )).conver
 pygame.display.set_caption('Gelatin Jumping')
 imagem_fundo=pygame.image.load('fundo.jpg').convert() #criando a imagem de fundo
 imagem_fundo=pygame.transform.scale(imagem_fundo, (larg, alt))
-imagem_chao=pygame.image.load(os.path.join(direct_imag, "chao2.png")).convert_alpha()
+imagem_chao=pygame.image.load(os.path.join(direct_imag, "chao.png")).convert_alpha()
 clock=pygame.time.Clock() #velocidade de processamento
 todas =pygame.sprite.Group()
 gelatina=Gelatina(image_geleia)
 todas.add(gelatina)
 #criando movimentação no chão 
-for i in range(9): 
-    chao=Chao(i, imagem_chao)
-    todas.add(chao)
+
+chao=Chao(100,imagem_chao)
+todas.add(chao)
 #Loop principal
 while True:
     delta_time=clock.tick(60) #o jogo não vai rodar mais rapido que 60 FPS por segundo 
