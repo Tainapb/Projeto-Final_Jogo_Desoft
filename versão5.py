@@ -74,7 +74,7 @@ direct_imag=os.path.join(diret,"imagens")
 tela=pygame.display.set_mode((larg, alt)) #criando a tela principal
 image_geleia= pygame.image.load(os.path.join(direct_imag, "geleia.png" )).convert_alpha()
 pygame.display.set_caption('Gelatin Jumping')
-imagem_fundo=pygame.image.load('fundo.jpg').convert() #criando a imagem de fundo
+imagem_fundo=pygame.image.load('imagens/fundo.jpg').convert() #criando a imagem de fundo
 imagem_fundo=pygame.transform.scale(imagem_fundo, (larg, alt))
 imagem_chao=pygame.image.load(os.path.join(direct_imag, "chao.png")).convert_alpha()
 imagem_plataforma=pygame.image.load(os.path.join(direct_imag,'prato.png')).convert_alpha()
