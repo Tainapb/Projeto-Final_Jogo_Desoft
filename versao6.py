@@ -13,7 +13,7 @@ clock = pygame.time.Clock()
 FPS = 6   #frames por segundo
 
 # variaveis do jogo
-GRAVIDADE = 100 #100 #gelatina cair depois de pular
+GRAVIDADE = 9 #9 #100 #gelatina cair depois de pular
 
 #cria janela do jogo
 screen = pygame.display.set_mode((TELA_WIDTH,TELA_HEIGHT))
@@ -43,9 +43,9 @@ class Gelatina():
         #processa os apertos dos botões
         key = pygame.key.get_pressed()
         if key[pygame.K_LEFT]:
-            delta_x = -150   #mudar esse numero se quiser que ela ande mais ou menos rápido
+            delta_x = -100   #mudar esse numero se quiser que ela ande mais ou menos rápido
         if key[pygame.K_RIGHT]:
-            delta_x =  150   #mudar esse numero se quiser que ela ande mais ou menos rápido
+            delta_x =  100   #mudar esse numero se quiser que ela ande mais ou menos rápido
                 
         #gravidade
         self.vel_y += GRAVIDADE 
@@ -60,7 +60,7 @@ class Gelatina():
         #checa colisão com o chão/ nao deixa a gelatina passar a tela
         if self.rect.bottom + delta_y > TELA_HEIGHT:
             delta_y = 0 
-            self.vel_y = -200 #200 #determina intensidade que ela quica do chão 
+            self.vel_y = -50 #50 #200 #determina intensidade que ela quica do chão 
 
         #atualiza a posição do retangulo (gelatina)
         self.rect.x += delta_x
