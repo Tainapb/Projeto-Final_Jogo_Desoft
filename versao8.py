@@ -49,6 +49,7 @@ class Gelatina(pygame.sprite.Sprite):
                          self.rect.bottom=plataforma.rect.top
                          delta_y=0
                          self.velocidade_y=-20
+                         som_pulo.play()
         #colisão com o chão
         if self.rect.bottom+delta_y> alt: 
             delta_y=0
@@ -98,6 +99,8 @@ pygame.init()
 cinza =(127,127,127)
 rosa=(200, 0, 100)
 gravi=1
+
+som_pulo = pygame.mixer.Sound('pulo2.wav')
 #dimensões
 larg=450
 alt=650
@@ -131,17 +134,9 @@ todas.add(gelatina)
 chao=Chao(100,imagem_chao)
 todas.add(chao)
 
-#for i in range(7): 
-#    i_w=random.randint(40,60)
-#    i_x=random.randint(0,larg-i_w)
-#    i_y= i* random.randint(80,120)
-#    plataforma= Plataformas(i_x, i_y, i_w)
-#    plataforma_grupo.add(plataforma)
-
 #criando plataformas iniciais
 plataforma = Plataformas(larg//2+50,alt-150,100)
 plataforma_grupo.add(plataforma)
-
 
 #Loop principal
 while True:
@@ -173,6 +168,7 @@ while True:
     tela.blit(imagem_fundo, (0,0))
     #pygame.draw.line(tela, rosa, (0, rolt_t), (larg,rolt_t))
     todas.draw(tela)
+
     plataforma_grupo.update(rol) #atualiza plataforma
     plataforma_grupo.draw(tela)
 
