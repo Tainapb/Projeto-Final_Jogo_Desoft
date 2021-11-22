@@ -11,62 +11,45 @@ class Gelatina(pygame.sprite.Sprite):
     def __init__(self,x,y):
         pygame.sprite.Sprite.__init__(self)
         self.image=pygame.transform.scale(image_geleia, (100,100)) #definindo o tamanho da geleia
-        self.larg=90
+        self.larg=80
         self.alt=75
         self.rect=pygame.Rect(0,0,self.larg, self.alt) #define o tamanho do retangulo 
         self.rect.center=(x,y)  #define a posição em que a gelatina aparecerar na tela
         self.velocidade_y=0
         self.flip = False
+        self.delta_x = 0
+        self.delta_y =0
+        self.energy = 5
+    def jump(self):
+        self.energy = 5
 
-    def move(self):
-        rol=0 
-        delta_x=0 # mudança da coordenada x
-        delta_y=0 #mudança da coordenada y
 
-        # permite a movimentação da geleia pelas setas 
-        key = pygame.key.get_pressed()
-        if key[pygame.K_RIGHT]:
-            delta_x = +8 #mudar esse numero se quiser que ela ande mais ou menos rápido
-            self.flip = False
-        if key[pygame.K_LEFT]:
-            delta_x = -8  #mudar esse numero se quiser que ela ande mais ou menos rápido
-            self.flip = True
-           
-        #gravidade
-        self.velocidade_y+=gravi
-        delta_y+=self.velocidade_y
+    def update(self):
+        if self.energy>0:
+            self.rect.y+=-self.energy
+    
+        else:
+            self.rect.y+=self.energy
+        
+        self.energy -=1
+        print(self.rect.y)
+       # if self.rect.y <=0:
+        #    self.rect.y = alt-self.alt 
 
-        #checa se a gelatina não sai da tela
-        if self.rect.left +delta_x <0: 
-            delta_x=-self.rect.left
-        if self.rect.right +delta_x > larg:
-            delta_x=larg-self.rect.right
-        #checa colisão com as plataformas e nao deixa a gelatina passar a tela 
-        for plataforma in plataforma_grupo: 
-             if plataforma.rect.colliderect(self.rect.x, self.rect.y +delta_y, self.larg,self.alt): 
-                 if self.rect.bottom <plataforma.rect.centery: 
-                     if self.velocidade_y>0: 
-                         self.rect.bottom=plataforma.rect.top
-                         delta_y=0
-                         self.velocidade_y=-20
-                         som_pulo.play()
-        #colisão com o chão
-        if self.rect.bottom+delta_y> alt: 
-            delta_y=0
-            self.velocidade_y=-20
-        #colisão com o topo 
-        if self.rect.top<=rolt_t: 
-            if self.velocidade_y<0:
-                rol=-delta_y
 
-        self.rect.x+=delta_x
-        self.rect.y+=delta_y +rol
-        return rol
-
+    
     def draw(self):
         tela.blit(pygame.transform.flip(self.image, self.flip, False),(self.rect.x-12, self.rect.y-5))
         pygame.draw.rect(tela,(255,255,255), self.rect, 2)
     
+    def move(self):
+        if self.rect.bottom <plataforma.rect.centery: 
+                    if self.velocidade_y>0: 
+                        self.rect.bottom=plataforma.rect.top
+                        self.delta_y=0
+                        self.velocidade_y=-20
+                        som_pulo.play()
+
 
 class Chao(pygame.sprite.Sprite): 
     def __init__(self, posicao_x, imagem): 
@@ -91,16 +74,19 @@ class Plataformas(pygame.sprite.Sprite):
     def update(self, rol): 
         self.rect.y+=rol #atualiza posição vertical da plataforma
         if self.rect.top>alt: #checa se a plataforma saiu da tela
-            self.kill()  # deleta a plataforma da memoria            
+            self.kill()  # deleta a plataforma da memoria    
+
+    #def draw(self):
+    #    tela.blit(pygame.transform.flip(self.image, self.flip, False),(self.rect.x-12, self.rect.y-5))
+    #    pygame.draw.rect(tela,(255,255,255), self.rect, 2)        
 
 pygame.init()
 
 #cores 
 cinza =(127,127,127)
 rosa=(200, 0, 100)
-gravi=1
 
-som_pulo = pygame.mixer.Sound('pulo2.wav')
+som_pulo = pygame.mixer.Sound('pulo.wav')
 #dimensões
 larg=450
 alt=650
@@ -137,7 +123,7 @@ todas.add(chao)
 #criando plataformas iniciais
 plataforma = Plataformas(larg//2+50,alt-150,100)
 plataforma_grupo.add(plataforma)
-
+rol = 0
 #Loop principal
 while True:
     delta_time=clock.tick(60) #o jogo não vai rodar mais rapido que 60 FPS por segundo 
@@ -147,8 +133,25 @@ while True:
             pygame.quit() #permitindo que se feche a janela
             sys.exit()
             # permitindo movimentação pelo teclado
-    
-    rol=gelatina.move()
+    # permite a movimentação da geleia pelas setas 
+    key = pygame.key.get_pressed()
+    if key[pygame.K_RIGHT]:
+        gelatina.delta_x = +8 #mudar esse numero se quiser que ela ande mais ou menos rápido
+        gelatina.flip = False
+    if key[pygame.K_LEFT]:
+        gelatina.delta_x = -8  #mudar esse numero se quiser que ela ande mais ou menos rápido
+        gelatina.flip = True
+
+    todas.update() 
+
+    hits = pygame.sprite.spritecollide(gelatina,plataforma_grupo,False,pygame.sprite.collide_mask)
+    for hit in hits:
+        gelatina.jump()
+        rol+=8
+        print('colidiu')
+
+
+
     
     #desenha o fundo
     im_fundo_rol+=rol
@@ -173,6 +176,8 @@ while True:
     plataforma_grupo.draw(tela)
 
     #gelatina.draw()
+    
+    #plataforma.draw()
    
     pygame.display.update()
     
@@ -183,3 +188,30 @@ while True:
 
 
     #pygame.display.flip() #faz a atualização da tela  
+
+    
+'''  
+     #gravidade
+        self.velocidade_y+=gravi
+        self.delta_y+=self.velocidade_y
+
+        #checa se a gelatina não sai da tela
+        if self.rect.left +self.delta_x <0: 
+            self.delta_x=-self.rect.left
+        if self.rect.right +self.delta_x > larg:
+            self.delta_x=larg-self.rect.right
+
+        #colisão com o chão
+        if self.rect.bottom+self.delta_y> alt: 
+            self.delta_y=0
+            self.velocidade_y=-20
+        #colisão com o topo 
+        if self.rect.top<=rolt_t: 
+            if self.velocidade_y<0:
+                rol=-self.delta_y
+
+        self.rect.x+=self.delta_x
+        self.rect.y+=self.delta_y
+        self.delta_x=0 # mudança da coordenada x
+        self.delta_y=0 #mudança da coordenada y
+'''
