@@ -94,6 +94,8 @@ som_pulo = pygame.mixer.Sound('Projeto-final/musics/pulo.wav')
 #dimensões
 larg=450
 alt=650
+score=0
+fonte=pygame.font.SysFont("inkfree", 20, bold=True, italic=True )   # vai definir a fonte do texto que aparecerá na tela 
 #variaveis 
 rol=0    #rolagem
 im_fundo_rol=0  #rolagem da imagem de fundo
@@ -125,6 +127,7 @@ game=True
 while game:
     clock.tick(60) #o jogo não vai rodar mais rapido que 60 FPS por segundo 
     eventos=pygame.event.get() #retorna uma lista com os comandos que o usuário fez no teclado
+    
     for event in eventos: 
         if event.type==pygame.QUIT:
             pygame.quit() #permitindo que se feche a janela
@@ -148,6 +151,7 @@ while game:
             obs.rect.y += JUMP_STEP
     hits = pygame.sprite.spritecollide(gelatina,plataforma_grupo,False,pygame.sprite.collide_mask)
     for hit in hits:
+        score+=1
         print("colidiu")
         gelatina.jump()
         som_pulo.play()
@@ -169,7 +173,11 @@ while game:
         plataforma = Plataformas(plat_x,plat_y,plat_larg)
         plataforma_grupo.add(plataforma)
     #gelatina.move()
+    
+    cont=f'Score: {score}'
+    contador=fonte.render(cont, True, (255,255,255))
     tela.blit(imagem_fundo, (0,0))
+    tela.blit(contador, (310,40))
     #pygame.draw.line(tela, rosa, (0, rolt_t), (larg,rolt_t))
     plataforma_grupo.draw(tela)
     plataforma_grupo.update() #atualiza plataforma
