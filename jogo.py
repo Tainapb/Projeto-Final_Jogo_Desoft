@@ -3,7 +3,8 @@ import sys
 import pygame
 from pygame.locals import*
 import random
-JUMP_STEP = 10
+import time
+JUMP_STEP = 15  #tamanho do pulo
 def draw_fundo(im_fundo_rol): 
     tela.blit(imagem_fundo, (0,0+im_fundo_rol))
     tela.blit(imagem_fundo, (0,-600+im_fundo_rol))
@@ -30,17 +31,27 @@ class Gelatina(pygame.sprite.Sprite):
             self.rect.right =larg -10
         if self.rect.left<-10: 
             self.rect.left=-10
-
     def draw(self):
         tela.blit(pygame.transform.flip(self.image, self.flip, False),(self.rect.x-12, self.rect.y-5))
         pygame.draw.rect(tela,(255,255,255), self.rect, 2)
     def move(self):
-        if self.rect.bottom <plataforma.rect.centery: 
+
+        self.delta_y+=self.velocidade_y
+        '''for p in plataforma_grupo: 
+            if p.rect.colliderect(self.rect.x, self.rect.y +self.delta_y, self.larg,self.alt): 
+                if self.rect.bottom <plataforma.rect.centery: 
                     if self.velocidade_y>0: 
                         self.rect.bottom=plataforma.rect.top
                         self.delta_y=0
-                        self.velocidade_y=-20
-                        #som_pulo.play()
+                        self.velocidade_y=-20'''
+        
+        for p in plataforma_grupo: 
+            if self.rect.bottom <p.rect.top:
+                if self.velocidade_y>0: 
+                    self.rect.bottom=plataforma.rect.top
+                    self.delta_y=0
+                    self.velocidade_y=-20
+                        #som_pulo.play()'''
 class Chao(pygame.sprite.Sprite): 
     def __init__(self, posicao_x, imagem): 
         pygame.sprite.Sprite.__init__(self)
@@ -61,7 +72,7 @@ class Plataformas(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.image=pygame.transform.scale(imagem_plataforma,(120,50))
         self.rect=self.image.get_rect()
-        self.rect = pygame.Rect(0,0,100,30 )
+        self.rect = pygame.Rect(0,0,100,10 )
         self.rect.x = x
         self.rect.y = y
         self.flip=False
@@ -75,10 +86,11 @@ class Plataformas(pygame.sprite.Sprite):
     #    tela.blit(pygame.transform.flip(self.image, self.flip, False),(self.rect.x-12, self.rect.y-5))
     #    pygame.draw.rect(tela,(255,255,255), self.rect, 2)        
 pygame.init()
+pygame.mixer.init()
 #cores 
 cinza =(127,127,127)
 rosa=(200, 0, 100)
-som_pulo = pygame.mixer.Sound('pulo.wav')
+som_pulo = pygame.mixer.Sound('Projeto-final/musics/pulo.wav')
 #dimensões
 larg=450
 alt=650
@@ -86,7 +98,7 @@ alt=650
 rol=0    #rolagem
 im_fundo_rol=0  #rolagem da imagem de fundo
 rolt_t=200   #velocidade de subida do fundo
-max=10 #limite de plataformas
+max=5#limite de plataformas
 #permite acesso as fotos na pasta imagens 
 diret=os.path.dirname(__file__)
 direct_imag=os.path.join(diret,"imagens")
@@ -109,7 +121,8 @@ chao=Chao(100,imagem_chao)
 plataforma_grupo.add(chao)
 rol = 0
 #Loop principal
-while True:
+game=True
+while game:
     clock.tick(60) #o jogo não vai rodar mais rapido que 60 FPS por segundo 
     eventos=pygame.event.get() #retorna uma lista com os comandos que o usuário fez no teclado
     for event in eventos: 
@@ -126,7 +139,8 @@ while True:
         gelatina.rect.x -= 8  #mudar esse numero se quiser que ela ande mais ou menos rápido
         gelatina.flip = True
     todas.update() 
-  
+    if gelatina.rect.bottom >alt: 
+        game=False
     # ajusta o limite superior de gelatina
     if gelatina.rect.y < alt // 2:
         gelatina.rect.y = alt // 2
@@ -134,6 +148,7 @@ while True:
             obs.rect.y += JUMP_STEP
     hits = pygame.sprite.spritecollide(gelatina,plataforma_grupo,False,pygame.sprite.collide_mask)
     for hit in hits:
+        print("colidiu")
         gelatina.jump()
         som_pulo.play()
         # chao.rect.y+=10 #atualiza posição vertical da plataforma
