@@ -23,7 +23,7 @@ class Gelatina(pygame.sprite.Sprite):
         self.rect.x+=self.speedx   #acrescenta a velocidade a
         self.speedy+=gravity  
         if self.pulo==True: 
-            if self.rect.y<=390:
+            if self.rect.y<=alt-250:   
                 self.pulo= False 
             self.rect.y-=5
         else: 
@@ -36,17 +36,23 @@ class Gelatina(pygame.sprite.Sprite):
             self.rect.right=larg
         if self.rect.left < 0: 
             self.rect.left=0 
+           
 class Chao(pygame.sprite.Sprite): 
     def __init__(self, imagem): 
         pygame.sprite.Sprite.__init__(self)
         self.image= imagem
         self.rect=self.image.get_rect()
-        self.rect.y=alt-40 #posição Y do chão 
-        self.rect.x=-40#posicao x do chão 
+        self.rect = pygame.Rect(0,0,550,50 )
+        self.rect.y=alt-50 #posição Y do chão 
+        self.rect.x=-40 #posicao x do chão 
+    
+    def draw(self): 
+        window.blit(pygame.transform.flip(self.image, False, False), (self.rect.x - 12, self.rect.y - 5))
+        pygame.draw.rect(window, (255,255,255), self.rect, 2)   
     def update(self): 
         if  self.rect.topright[0]<0: 
             self.rect.x=larg
-        
+       
 class Plataformas(pygame.sprite.Sprite): 
     def __init__(self, imagem, x, y): 
         pygame.sprite.Sprite.__init__(self)
@@ -54,9 +60,8 @@ class Plataformas(pygame.sprite.Sprite):
         self.rect=self.image.get_rect()
         self.rect.x=x
         self.rect.y=y
-    
-pygame.init()
 
+pygame.init()
 x=50
 y=20
 larg=500
@@ -100,11 +105,11 @@ max=15  #maximo de plataformas que aparecerão na tela
 
 todas=pygame.sprite.Group()
 plataforma_grupo=pygame.sprite.Group()
-
 gelatina=Gelatina(geleia)
 todas.add(gelatina)
+chao_todas=pygame.sprite.Group()
 chao_prin=Chao(chao)
-todas.add(chao_prin)
+chao_todas.add(chao_prin)
 
 for i in range(max): 
     i_w=random.randint(40,60)
@@ -115,7 +120,7 @@ for i in range(max):
 game = True
 # ===== Loop principal =====
 while game:
-    
+
     clock.tick(FPS)
     # ----- Trata eventos
     for event in pygame.event.get():
@@ -134,18 +139,21 @@ while game:
                 gelatina.speedx += 8
             if event.key == pygame.K_RIGHT:
                 gelatina.speedx -= 8
+
     # ----- Gera saídas
     #hits=pygame.sprite.spritecollide(gelatina, plataforma_grupo, True)
     todas.update()
-
-    hits = pygame.sprite.spritecollide(gelatina, plataforma_grupo, False, pygame.sprite.collide_mask)
-    for hit in hits: 
-        print('colisão')
-        
+    hits = pygame.sprite.spritecollide(gelatina, chao_todas,False)
+    if len(hits)>0: 
+        print("colisão")
+        gelatina.pular()
+    
     window.fill((200, 0, 100))  # Preenche com a cor branca
     window.blit(image_fundo, (0,0))   #define a imagem de fundo e posiciona para preencher toda a tela 
     window.blit(plataforma, (plat_x, plat_y))
     plataforma_grupo.draw(window)
+    chao_todas.draw(window)
+    #chao_prin.draw()    #colocar como comentário depois 
     todas.draw(window)
   
     # ----- Atualiza estado do jogo
