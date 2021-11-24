@@ -3,7 +3,7 @@ import sys
 import pygame
 from pygame.locals import*
 import random
-JUMP_STEP = 15
+JUMP_STEP = 10
 def draw_fundo(im_fundo_rol): 
     tela.blit(imagem_fundo, (0,0+im_fundo_rol))
     tela.blit(imagem_fundo, (0,-600+im_fundo_rol))
@@ -78,7 +78,7 @@ pygame.init()
 #cores 
 cinza =(127,127,127)
 rosa=(200, 0, 100)
-#som_pulo = pygame.mixer.Sound('pulo.wav')
+som_pulo = pygame.mixer.Sound('pulo.wav')
 #dimensões
 larg=450
 alt=650
@@ -135,6 +135,7 @@ while True:
     hits = pygame.sprite.spritecollide(gelatina,plataforma_grupo,False,pygame.sprite.collide_mask)
     for hit in hits:
         gelatina.jump()
+        som_pulo.play()
         # chao.rect.y+=10 #atualiza posição vertical da plataforma
         rol = hit.rect.y
     #desenha o fundo
@@ -143,7 +144,7 @@ while True:
         im_fundo_rol=0
     draw_fundo(im_fundo_rol)
     #cria plataformas
-    if len(plataforma_grupo)<max+1:
+    if len(plataforma_grupo)<max:
         plat_larg = random.randint(40,60) #30,50 ou 40,60
         plat_x = random.randint(0,larg-115)  #define o intervalo em que a plataforma pode aparecer no eixo x
         if len(plataforma_grupo) == 1:
@@ -158,7 +159,7 @@ while True:
     plataforma_grupo.draw(tela)
     plataforma_grupo.update() #atualiza plataforma
     todas.draw(tela)
-    gelatina.draw()
+    #gelatina.draw()
     #plataforma.most()
     pygame.display.update()
     #todas.update()
