@@ -31,7 +31,6 @@ class Gelatina(pygame.sprite.Sprite):
         if self.rect.left<-10: 
             self.rect.left=-10
 
-      
     def draw(self):
         tela.blit(pygame.transform.flip(self.image, self.flip, False),(self.rect.x-12, self.rect.y-5))
         pygame.draw.rect(tela,(255,255,255), self.rect, 2)
@@ -87,7 +86,7 @@ alt=650
 rol=0    #rolagem
 im_fundo_rol=0  #rolagem da imagem de fundo
 rolt_t=200   #velocidade de subida do fundo
-max=1 #limite de plataformas
+max=10 #limite de plataformas
 #permite acesso as fotos na pasta imagens 
 diret=os.path.dirname(__file__)
 direct_imag=os.path.join(diret,"imagens")
@@ -146,7 +145,7 @@ while True:
     #cria plataformas
     if len(plataforma_grupo)<max+1:
         plat_larg = random.randint(40,60) #30,50 ou 40,60
-        plat_x = random.randint(0,larg-plat_larg)
+        plat_x = random.randint(0,larg-115)  #define o intervalo em que a plataforma pode aparecer no eixo x
         if len(plataforma_grupo) == 1:
            plat_y = 500    #esse número define a posição em que as plataformas vão começar a aparecer 
         else:
@@ -159,7 +158,7 @@ while True:
     plataforma_grupo.draw(tela)
     plataforma_grupo.update() #atualiza plataforma
     todas.draw(tela)
-    #gelatina.draw()
+    gelatina.draw()
     #plataforma.most()
     pygame.display.update()
     #todas.update()
