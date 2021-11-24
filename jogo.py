@@ -25,13 +25,13 @@ class Gelatina(pygame.sprite.Sprite):
     def update(self):
         self.rect.y+=-self.energy
         self.energy -=1
-
-
         #chega se não passa da tela 
         if self.rect.right > larg-10: 
             self.rect.right =larg -10
         if self.rect.left<-10: 
             self.rect.left=-10
+
+      
     def draw(self):
         tela.blit(pygame.transform.flip(self.image, self.flip, False),(self.rect.x-12, self.rect.y-5))
         pygame.draw.rect(tela,(255,255,255), self.rect, 2)
@@ -87,7 +87,7 @@ alt=650
 rol=0    #rolagem
 im_fundo_rol=0  #rolagem da imagem de fundo
 rolt_t=200   #velocidade de subida do fundo
-max=0 #limite de plataformas
+max=1 #limite de plataformas
 #permite acesso as fotos na pasta imagens 
 diret=os.path.dirname(__file__)
 direct_imag=os.path.join(diret,"imagens")
@@ -105,7 +105,7 @@ gelatina=Gelatina(larg/2,alt-150) #define a posição que a gelatina vai iniciar
 todas.add(gelatina)
 #criando chão 
 chao=Chao(100,imagem_chao)
-todas.add(chao)
+
 #criando plataformas iniciais
 plataforma_grupo.add(chao)
 rol = 0
@@ -127,6 +127,7 @@ while True:
         gelatina.rect.x -= 8  #mudar esse numero se quiser que ela ande mais ou menos rápido
         gelatina.flip = True
     todas.update() 
+  
     # ajusta o limite superior de gelatina
     if gelatina.rect.y < alt // 2:
         gelatina.rect.y = alt // 2
@@ -155,9 +156,9 @@ while True:
     #gelatina.move()
     tela.blit(imagem_fundo, (0,0))
     #pygame.draw.line(tela, rosa, (0, rolt_t), (larg,rolt_t))
-    todas.draw(tela)
-    plataforma_grupo.update() #atualiza plataforma
     plataforma_grupo.draw(tela)
+    plataforma_grupo.update() #atualiza plataforma
+    todas.draw(tela)
     #gelatina.draw()
     #plataforma.most()
     pygame.display.update()
