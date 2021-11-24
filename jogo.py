@@ -52,6 +52,8 @@ class Gelatina(pygame.sprite.Sprite):
                     self.delta_y=0
                     self.velocidade_y=-20
                         #som_pulo.play()'''
+
+        
 class Chao(pygame.sprite.Sprite): 
     def __init__(self, posicao_x, imagem): 
         pygame.sprite.Sprite.__init__(self)
@@ -109,6 +111,8 @@ image_geleia= pygame.image.load(os.path.join(direct_imag, "geleia.png" )).conver
 pygame.display.set_caption('Gelatin Jumping')
 imagem_fundo=pygame.image.load(os.path.join(direct_imag, 'fundo.jpg')).convert() #criando a imagem de fundo
 imagem_fundo=pygame.transform.scale(imagem_fundo, (larg, alt))
+
+
 imagem_chao=pygame.image.load(os.path.join(direct_imag, "plat.png")).convert_alpha()
 imagem_plataforma=pygame.image.load(os.path.join(direct_imag,'prato.png')).convert_alpha()
 plataforma_grupo=pygame.sprite.Group() #cria grupo das plataformas
@@ -157,6 +161,15 @@ while game:
         som_pulo.play()
         # chao.rect.y+=10 #atualiza posição vertical da plataforma
         rol = hit.rect.y
+
+    #muda a cor do fundo caso ultapasse um certo score 
+    if score >100: 
+            imagem_fundo=pygame.image.load(os.path.join(direct_imag, 'fundo2.jpg')).convert() #criando a imagem de fundo
+            imagem_fundo=pygame.transform.scale(imagem_fundo, (larg, alt))
+    if score>500: 
+        imagem_fundo=pygame.image.load(os.path.join(direct_imag, 'fundo3.jpg')).convert() #criando a imagem de fundo
+        imagem_fundo=pygame.transform.scale(imagem_fundo, (larg, alt))
+    
     #desenha o fundo
     im_fundo_rol+=rol
     if im_fundo_rol>=600: #altura
@@ -182,6 +195,7 @@ while game:
     plataforma_grupo.draw(tela)
     plataforma_grupo.update() #atualiza plataforma
     todas.draw(tela)
+
     #gelatina.draw()
     #plataforma.most()
     pygame.display.update()
