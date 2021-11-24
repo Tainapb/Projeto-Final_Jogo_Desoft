@@ -3,7 +3,7 @@ import sys
 import pygame
 from pygame.locals import*
 import random
-JUMP_STEP = 8
+JUMP_STEP = 15
 def draw_fundo(im_fundo_rol): 
     tela.blit(imagem_fundo, (0,0+im_fundo_rol))
     tela.blit(imagem_fundo, (0,-600+im_fundo_rol))
@@ -25,8 +25,13 @@ class Gelatina(pygame.sprite.Sprite):
     def update(self):
         self.rect.y+=-self.energy
         self.energy -=1
-       # if self.rect.y <=0:
-        #    self.rect.y = alt-self.alt 
+
+
+        #chega se não passa da tela 
+        if self.rect.right > larg-10: 
+            self.rect.right =larg -10
+        if self.rect.left<-10: 
+            self.rect.left=-10
     def draw(self):
         tela.blit(pygame.transform.flip(self.image, self.flip, False),(self.rect.x-12, self.rect.y-5))
         pygame.draw.rect(tela,(255,255,255), self.rect, 2)
@@ -36,7 +41,7 @@ class Gelatina(pygame.sprite.Sprite):
                         self.rect.bottom=plataforma.rect.top
                         self.delta_y=0
                         self.velocidade_y=-20
-                        som_pulo.play()
+                        #som_pulo.play()
 class Chao(pygame.sprite.Sprite): 
     def __init__(self, posicao_x, imagem): 
         pygame.sprite.Sprite.__init__(self)
@@ -57,11 +62,16 @@ class Plataformas(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.image=pygame.transform.scale(imagem_plataforma,(120,50))
         self.rect=self.image.get_rect()
+        self.rect = pygame.Rect(0,0,100,30 )
         self.rect.x = x
         self.rect.y = y
+        self.flip=False
     def update(self): 
         if self.rect.top>alt: #checa se a plataforma saiu da tela
             self.kill()  # deleta a plataforma da memoria    
+    def most(self):
+        tela.blit(pygame.transform.flip(self.image, self.flip, False),(self.rect.x-12, self.rect.y-5))
+        pygame.draw.rect(tela,(255,255,255), self.rect, 2)    
     #def draw(self):
     #    tela.blit(pygame.transform.flip(self.image, self.flip, False),(self.rect.x-12, self.rect.y-5))
     #    pygame.draw.rect(tela,(255,255,255), self.rect, 2)        
@@ -69,7 +79,7 @@ pygame.init()
 #cores 
 cinza =(127,127,127)
 rosa=(200, 0, 100)
-som_pulo = pygame.mixer.Sound('pulo.wav')
+#som_pulo = pygame.mixer.Sound('pulo.wav')
 #dimensões
 larg=450
 alt=650
@@ -77,7 +87,7 @@ alt=650
 rol=0    #rolagem
 im_fundo_rol=0  #rolagem da imagem de fundo
 rolt_t=200   #velocidade de subida do fundo
-max=10  #limite de plataformas
+max=0 #limite de plataformas
 #permite acesso as fotos na pasta imagens 
 diret=os.path.dirname(__file__)
 direct_imag=os.path.join(diret,"imagens")
@@ -134,12 +144,12 @@ while True:
     draw_fundo(im_fundo_rol)
     #cria plataformas
     if len(plataforma_grupo)<max+1:
-        plat_larg = random.randint(30,50) #30,50 ou 40,60
+        plat_larg = random.randint(40,60) #30,50 ou 40,60
         plat_x = random.randint(0,larg-plat_larg)
         if len(plataforma_grupo) == 1:
-            plat_y = 500
+           plat_y = 500    #esse número define a posição em que as plataformas vão começar a aparecer 
         else:
-            plat_y = plataforma_grupo.sprites()[-1].rect.y - 100
+            plat_y = plataforma_grupo.sprites()[-1].rect.y - 150 #esse número define o espaçamento entre as plataformas
         plataforma = Plataformas(plat_x,plat_y,plat_larg)
         plataforma_grupo.add(plataforma)
     #gelatina.move()
@@ -149,7 +159,7 @@ while True:
     plataforma_grupo.update() #atualiza plataforma
     plataforma_grupo.draw(tela)
     #gelatina.draw()
-    #plataforma.draw()
+    #plataforma.most()
     pygame.display.update()
     #todas.update()
     #pygame.display.flip() #faz a atualização da tela  
