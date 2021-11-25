@@ -54,6 +54,7 @@ class Gelatina(pygame.sprite.Sprite):
                         #som_pulo.play()'''
 
         
+        
 class Chao(pygame.sprite.Sprite): 
     def __init__(self, posicao_x, imagem): 
         pygame.sprite.Sprite.__init__(self)
@@ -92,7 +93,7 @@ pygame.mixer.init()
 #cores 
 cinza =(127,127,127)
 rosa=(200, 0, 100)
-som_pulo = pygame.mixer.Sound('Projeto-final/musics/pulo.wav')
+som_pulo = pygame.mixer.Sound('pulo.wav')
 #dimensões
 larg=450
 alt=650
@@ -155,7 +156,7 @@ while game:
             obs.rect.y += JUMP_STEP
     hits = pygame.sprite.spritecollide(gelatina,plataforma_grupo,False,pygame.sprite.collide_mask)
     for hit in hits:
-        score+=1
+        #score+=1
         print("colidiu")
         gelatina.jump()
         som_pulo.play()
@@ -183,6 +184,7 @@ while game:
            plat_y = 500    #esse número define a posição em que as plataformas vão começar a aparecer 
         else:
             plat_y = plataforma_grupo.sprites()[-1].rect.y - 150 #esse número define o espaçamento entre as plataformas
+            score+=1
         plataforma = Plataformas(plat_x,plat_y,plat_larg)
         plataforma_grupo.add(plataforma)
     #gelatina.move()
