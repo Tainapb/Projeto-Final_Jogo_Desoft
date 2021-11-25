@@ -164,13 +164,15 @@ while game:
         rol = hit.rect.y
 
     #muda a cor do fundo caso ultapasse um certo score 
-    if score >100: 
+    if score >150: 
             imagem_fundo=pygame.image.load(os.path.join(direct_imag, 'fundo2.jpg')).convert() #criando a imagem de fundo
             imagem_fundo=pygame.transform.scale(imagem_fundo, (larg, alt))
     if score>500: 
         imagem_fundo=pygame.image.load(os.path.join(direct_imag, 'fundo3.jpg')).convert() #criando a imagem de fundo
         imagem_fundo=pygame.transform.scale(imagem_fundo, (larg, alt))
-    
+    if score>1000: 
+        imagem_fundo=pygame.image.load(os.path.join(direct_imag, 'fundo4.jpg')).convert() #criando a imagem de fundo
+        imagem_fundo=pygame.transform.scale(imagem_fundo, (larg, alt))
     #desenha o fundo
     im_fundo_rol+=rol
     if im_fundo_rol>=600: #altura
@@ -197,7 +199,7 @@ while game:
     plataforma_grupo.draw(tela)
     plataforma_grupo.update() #atualiza plataforma
     todas.draw(tela)
-
+ 
     #gelatina.draw()
     #plataforma.most()
     pygame.display.update()
