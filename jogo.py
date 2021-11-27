@@ -44,22 +44,6 @@ class Gelatina(pygame.sprite.Sprite):
     def move(self):
 
         self.delta_y+=self.velocidade_y
-        '''for p in plataforma_grupo: 
-            if p.rect.colliderect(self.rect.x, self.rect.y +self.delta_y, self.larg,self.alt): 
-                if self.rect.bottom <plataforma.rect.centery: 
-                    if self.velocidade_y>0: 
-                        self.rect.bottom=plataforma.rect.top
-                        self.delta_y=0
-                        self.velocidade_y=-20'''
-        
-        for p in plataforma_grupo: 
-            if self.rect.bottom <p.rect.top:
-                if self.velocidade_y>0: 
-                    self.rect.bottom=plataforma.rect.top
-                    self.delta_y=0
-                    self.velocidade_y=-20
-                        #som_pulo.play()'''
-
         
         
 class Chao(pygame.sprite.Sprite): 
@@ -209,7 +193,7 @@ while game:
     #cria plataformas
     if len(plataforma_grupo)<max:
         plat_larg = random.randint(40,60) #30,50 ou 40,60
-        plat_x = random.randint(0,larg-115)  #define o intervalo em que a plataforma pode aparecer no eixo x
+        plat_x = random.randint(0,larg-plat_larg-60)  #define o intervalo em que a plataforma pode aparecer no eixo x
         if len(plataforma_grupo) == 1:
            plat_y = 500    #esse número define a posição em que as plataformas vão começar a aparecer 
         else:
