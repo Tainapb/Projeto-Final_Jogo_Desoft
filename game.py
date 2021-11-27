@@ -5,13 +5,16 @@ from pygame.locals import*
 import random
 import time
 JUMP_STEP = 15  #tamanho do pulo
+
 # função que irá fazer a atualização de texto na tela
 def altera_tela(texto, fonte, t, x,y): 
     image=fonte.render(texto, True, t)
     tela.blit(image, (x,y))
+
 def draw_fundo(im_fundo_rol): 
     tela.blit(imagem_fundo, (0,0+im_fundo_rol))
     tela.blit(imagem_fundo, (0,-600+im_fundo_rol))
+
 class Gelatina(pygame.sprite.Sprite): 
     def __init__(self,x,y):
         pygame.sprite.Sprite.__init__(self)
@@ -26,11 +29,11 @@ class Gelatina(pygame.sprite.Sprite):
         self.delta_y =0
         self.jump()
     def jump(self):
-        self.energy = JUMP_STEP
+        self.energy = JUMP_STEP 
     def update(self):
         self.rect.y+=-self.energy
         self.energy -=1
-        #chega se não passa da tela 
+        #checa se não passa da tela 
         if self.rect.right > larg-10: 
             self.rect.right =larg -10
         if self.rect.left<-10: 
@@ -41,6 +44,10 @@ class Gelatina(pygame.sprite.Sprite):
     def move(self):
 
         self.delta_y+=self.velocidade_y
+
+
+        
+        
 class Chao(pygame.sprite.Sprite): 
     def __init__(self, posicao_x, imagem): 
         pygame.sprite.Sprite.__init__(self)
@@ -79,18 +86,24 @@ class Colher(pygame.sprite.Sprite):
         self.image=pygame.transform.scale(imagem_colher,(50,50))
         self.rect=self.image.get_rect()
         self.rect = pygame.Rect(0,0,40,40)
+
+
 pygame.init()
 pygame.mixer.init()
 #cores 
 cinza =(127,127,127)
 rosa=(200, 0, 100)
 preto=(0,0,0)
+
 #carregando os sons do jogo 
 som_pulo = pygame.mixer.Sound('Projeto-final/musics/pulo.wav')
+
 #definindo as fontes do texto 
 fonte=pygame.font.SysFont("inkfree", 25, bold=True, italic=True )  # vai definir a fonte do texto que aparecerá na tela 
 fonte2=pygame.font.SysFont("inkfree", 40, bold=True, italic=True )
 fonte3=pygame.font.SysFont("inkfree", 30, bold=True, italic=True )
+
+
 #dimensões
 larg=450
 alt=650
@@ -104,6 +117,7 @@ max=5#limite de plataformas
 #permite acesso as fotos na pasta imagens 
 diret=os.path.dirname(__file__)
 direct_imag=os.path.join(diret,"imagens")
+
 #carrengando as sprites que serão utilizadas no jogo
 tela=pygame.display.set_mode((larg, alt)) #criando a tela principal
 image_geleia= pygame.image.load(os.path.join(direct_imag, "geleia.png" )).convert_alpha()
@@ -124,6 +138,7 @@ gelatina=Gelatina(larg/2,alt-150) #define a posição que a gelatina vai iniciar
 todas.add(gelatina)
 #criando chão 
 chao=Chao(100,imagem_chao)
+
 #criando plataformas iniciais
 plataforma_grupo.add(chao)
 rol = 0
@@ -147,20 +162,23 @@ while game:
         gelatina.rect.x -= 8  #mudar esse numero se quiser que ela ande mais ou menos rápido
         gelatina.flip = True
     todas.update() 
-  
+
     # ajusta o limite superior de gelatina
     if gelatina.rect.y < alt // 2:
         gelatina.rect.y = alt // 2
         for obs in plataforma_grupo.sprites():
             obs.rect.y += JUMP_STEP
-    hits = pygame.sprite.spritecollide(gelatina,plataforma_grupo,False,pygame.sprite.collide_mask)
-    for hit in hits:
-        #score+=1
-        print("colidiu")
-        gelatina.jump()
-        som_pulo.play()
-        # chao.rect.y+=10 #atualiza posição vertical da plataforma
-        rol = hit.rect.y
+    for plataforma in plataforma_grupo:
+        if gelatina.rect.bottom > plataforma.rect.top:
+            hits = pygame.sprite.spritecollide(gelatina,plataforma_grupo,False,pygame.sprite.collide_mask)
+            for hit in hits:
+                #score+=1
+                print("colidiu")
+                gelatina.jump()
+                som_pulo.play()
+                # chao.rect.y+=10 #atualiza posição vertical da plataforma
+                rol = hit.rect.y
+
     #muda a cor do fundo caso ultapasse um certo score 
     if score >100: 
             imagem_fundo=pygame.image.load(os.path.join(direct_imag, 'fundo2.jpg')).convert() #criando a imagem de fundo
@@ -193,6 +211,7 @@ while game:
     contador=fonte.render(cont, True, (255,255,255))
     tela.blit(imagem_fundo, (0,0))
     tela.blit(contador, (310,40))
+    pygame.draw.line(tela,preto,(0,rolt_t),(larg,rolt_t))
     plataforma_grupo.draw(tela)
     plataforma_grupo.update() #atualiza plataforma
     if gelatina.rect.bottom >alt+50:  
@@ -205,6 +224,8 @@ while game:
         altera_tela("Press space to play again", fonte3, (preto),  25, 440)
          
     
+
     todas.draw(tela)
  
     pygame.display.update()
+  
