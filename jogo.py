@@ -82,7 +82,7 @@ class Plataformas(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.image=pygame.transform.scale(imagem_plataforma,(120,50))
         self.rect=self.image.get_rect()
-        self.rect = pygame.Rect(0,0,100,10 )
+        self.rect = pygame.Rect(0,0,100,10)
         self.rect.x = x
         self.rect.y = y
         self.flip=False
@@ -94,7 +94,14 @@ class Plataformas(pygame.sprite.Sprite):
         pygame.draw.rect(tela,(255,255,255), self.rect, 2)    
     #def draw(self):
     #    tela.blit(pygame.transform.flip(self.image, self.flip, False),(self.rect.x-12, self.rect.y-5))
-    #    pygame.draw.rect(tela,(255,255,255), self.rect, 2)        
+    #    pygame.draw.rect(tela,(255,255,255), self.rect, 2)    
+class Colher(pygame.sprite.Sprite):
+    def __init__(self, x, y, larg ):
+        self.image=pygame.transform.scale(imagem_colher,(50,50))
+        self.rect=self.image.get_rect()
+        self.rect = pygame.Rect(0,0,40,40)
+
+
 pygame.init()
 pygame.mixer.init()
 #cores 
@@ -106,8 +113,8 @@ preto=(0,0,0)
 som_pulo = pygame.mixer.Sound('Projeto-final/musics/pulo.wav')
 
 #definindo as fontes do texto 
-fonte1=pygame.font.SysFont("inkfree", 20, bold=True, italic=True )   # vai definir a fonte do texto que aparecerá na tela 
-fonte2=pygame.font.SysFont("inkfree", 50, bold=True, italic=True )
+fonte=pygame.font.SysFont("inkfree", 25, bold=True, italic=True )  # vai definir a fonte do texto que aparecerá na tela 
+fonte2=pygame.font.SysFont("inkfree", 40, bold=True, italic=True )
 fonte3=pygame.font.SysFont("inkfree", 30, bold=True, italic=True )
 
 
@@ -115,7 +122,7 @@ fonte3=pygame.font.SysFont("inkfree", 30, bold=True, italic=True )
 larg=450
 alt=650
 score=0
-fonte=pygame.font.SysFont("inkfree", 20, bold=True, italic=True )   # vai definir a fonte do texto que aparecerá na tela 
+  # vai definir a fonte do texto que aparecerá na tela 
 #variaveis 
 rol=0    #rolagem
 im_fundo_rol=0  #rolagem da imagem de fundo
@@ -129,13 +136,14 @@ direct_imag=os.path.join(diret,"imagens")
 tela=pygame.display.set_mode((larg, alt)) #criando a tela principal
 image_geleia= pygame.image.load(os.path.join(direct_imag, "geleia.png" )).convert_alpha()
 pygame.display.set_caption('Gelatin Jumping')
-fall=pygame.image.load(os.path.join(direct_imag, "fall.png" )).convert_alpha()
+fall=pygame.image.load(os.path.join(direct_imag, "fall2.png" )).convert_alpha()
 fall1=pygame.transform.scale(fall, (150,150))   #gelatina de cabeça para baixo
 fundo_f= pygame.image.load(os.path.join(direct_imag, "fim.jpg" )).convert_alpha()
 fundo_fim=pygame.transform.scale(fundo_f, (larg, alt))
 imagem_fundo=pygame.image.load(os.path.join(direct_imag, 'fundo.jpg')).convert() #criando a imagem de fundo
 imagem_fundo=pygame.transform.scale(imagem_fundo, (larg, alt))
 imagem_chao=pygame.image.load(os.path.join(direct_imag, "plat.png")).convert_alpha()
+imagem_colher=pygame.image.load(os.path.join(direct_imag, "colher.png")).convert_alpha()
 imagem_plataforma=pygame.image.load(os.path.join(direct_imag,'prato.png')).convert_alpha()
 plataforma_grupo=pygame.sprite.Group() #cria grupo das plataformas
 clock=pygame.time.Clock() #velocidade de processamento
@@ -184,13 +192,13 @@ while game:
         rol = hit.rect.y
 
     #muda a cor do fundo caso ultapasse um certo score 
-    if score >150: 
+    if score >100: 
             imagem_fundo=pygame.image.load(os.path.join(direct_imag, 'fundo2.jpg')).convert() #criando a imagem de fundo
             imagem_fundo=pygame.transform.scale(imagem_fundo, (larg, alt))
-    if score>500: 
+    if score>150: 
         imagem_fundo=pygame.image.load(os.path.join(direct_imag, 'fundo3.jpg')).convert() #criando a imagem de fundo
         imagem_fundo=pygame.transform.scale(imagem_fundo, (larg, alt))
-    if score>1000: 
+    if score>500: 
         imagem_fundo=pygame.image.load(os.path.join(direct_imag, 'fundo4.jpg')).convert() #criando a imagem de fundo
         imagem_fundo=pygame.transform.scale(imagem_fundo, (larg, alt))
     #desenha o fundo
@@ -217,21 +225,18 @@ while game:
     tela.blit(contador, (310,40))
     plataforma_grupo.draw(tela)
     plataforma_grupo.update() #atualiza plataforma
-    if gelatina.rect.bottom >alt:  
+    if gelatina.rect.bottom >alt+50:  
         #game=False
         game_over=True 
         tela.blit(fundo_fim, (0,0))
         tela.blit(fall1, (150,100))
-        altera_tela("Game over", fonte2, (rosa),  105, 240)
-        altera_tela(f"Score: {score}", fonte2, (rosa),  105, 340)
-        altera_tela("Press space to play again", fonte3, (rosa),  25, 440)
-
-    #pygame.draw.line(tela, rosa, (0, rolt_t), (larg,rolt_t))
+        altera_tela("GAME OVER!", fonte2, (preto),  95, 280)
+        altera_tela(f"Score: {score}", fonte2, (preto),  135, 360)
+        altera_tela("Press space to play again", fonte3, (preto),  25, 440)
+         
+    
 
     todas.draw(tela)
  
-    #gelatina.draw()
-    #plataforma.most()
     pygame.display.update()
-    #todas.update()
-    #pygame.display.flip() #faz a atualização da tela  
+  
