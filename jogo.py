@@ -5,9 +5,16 @@ from pygame.locals import*
 import random
 import time
 JUMP_STEP = 15  #tamanho do pulo
+
+# função que irá fazer a atualização de texto na tela
+def altera_tela(texto, fonte, t, x,y): 
+    image=fonte.render(texto, True, t)
+    tela.blit(image, (x,y))
+
 def draw_fundo(im_fundo_rol): 
     tela.blit(imagem_fundo, (0,0+im_fundo_rol))
     tela.blit(imagem_fundo, (0,-600+im_fundo_rol))
+
 class Gelatina(pygame.sprite.Sprite): 
     def __init__(self,x,y):
         pygame.sprite.Sprite.__init__(self)
@@ -93,7 +100,17 @@ pygame.mixer.init()
 #cores 
 cinza =(127,127,127)
 rosa=(200, 0, 100)
-som_pulo = pygame.mixer.Sound('pulo.wav')
+preto=(0,0,0)
+
+#carregando os sons do jogo 
+som_pulo = pygame.mixer.Sound('Projeto-final/musics/pulo.wav')
+
+#definindo as fontes do texto 
+fonte1=pygame.font.SysFont("inkfree", 20, bold=True, italic=True )   # vai definir a fonte do texto que aparecerá na tela 
+fonte2=pygame.font.SysFont("inkfree", 50, bold=True, italic=True )
+fonte3=pygame.font.SysFont("inkfree", 30, bold=True, italic=True )
+
+
 #dimensões
 larg=450
 alt=650
@@ -107,13 +124,17 @@ max=5#limite de plataformas
 #permite acesso as fotos na pasta imagens 
 diret=os.path.dirname(__file__)
 direct_imag=os.path.join(diret,"imagens")
+
+#carrengando as sprites que serão utilizadas no jogo
 tela=pygame.display.set_mode((larg, alt)) #criando a tela principal
 image_geleia= pygame.image.load(os.path.join(direct_imag, "geleia.png" )).convert_alpha()
 pygame.display.set_caption('Gelatin Jumping')
+fall=pygame.image.load(os.path.join(direct_imag, "fall.png" )).convert_alpha()
+fall1=pygame.transform.scale(fall, (150,150))   #gelatina de cabeça para baixo
+fundo_f= pygame.image.load(os.path.join(direct_imag, "fim.jpg" )).convert_alpha()
+fundo_fim=pygame.transform.scale(fundo_f, (larg, alt))
 imagem_fundo=pygame.image.load(os.path.join(direct_imag, 'fundo.jpg')).convert() #criando a imagem de fundo
 imagem_fundo=pygame.transform.scale(imagem_fundo, (larg, alt))
-
-
 imagem_chao=pygame.image.load(os.path.join(direct_imag, "plat.png")).convert_alpha()
 imagem_plataforma=pygame.image.load(os.path.join(direct_imag,'prato.png')).convert_alpha()
 plataforma_grupo=pygame.sprite.Group() #cria grupo das plataformas
@@ -147,8 +168,7 @@ while game:
         gelatina.rect.x -= 8  #mudar esse numero se quiser que ela ande mais ou menos rápido
         gelatina.flip = True
     todas.update() 
-    if gelatina.rect.bottom >alt: 
-        game=False
+  
     # ajusta o limite superior de gelatina
     if gelatina.rect.y < alt // 2:
         gelatina.rect.y = alt // 2
@@ -195,9 +215,19 @@ while game:
     contador=fonte.render(cont, True, (255,255,255))
     tela.blit(imagem_fundo, (0,0))
     tela.blit(contador, (310,40))
-    #pygame.draw.line(tela, rosa, (0, rolt_t), (larg,rolt_t))
     plataforma_grupo.draw(tela)
     plataforma_grupo.update() #atualiza plataforma
+    if gelatina.rect.bottom >alt:  
+        #game=False
+        game_over=True 
+        tela.blit(fundo_fim, (0,0))
+        tela.blit(fall1, (150,100))
+        altera_tela("Game over", fonte2, (rosa),  105, 240)
+        altera_tela(f"Score: {score}", fonte2, (rosa),  105, 340)
+        altera_tela("Press space to play again", fonte3, (rosa),  25, 440)
+
+    #pygame.draw.line(tela, rosa, (0, rolt_t), (larg,rolt_t))
+
     todas.draw(tela)
  
     #gelatina.draw()
@@ -205,25 +235,3 @@ while game:
     pygame.display.update()
     #todas.update()
     #pygame.display.flip() #faz a atualização da tela  
-'''  
-     #gravidade
-        self.velocidade_y+=gravi
-        self.delta_y+=self.velocidade_y
-        #checa se a gelatina não sai da tela
-        if self.rect.left +self.delta_x <0: 
-            self.delta_x=-self.rect.left
-        if self.rect.right +self.delta_x > larg:
-            self.delta_x=larg-self.rect.right
-        #colisão com o chão
-        if self.rect.bottom+self.delta_y> alt: 
-            self.delta_y=0
-            self.velocidade_y=-20
-        #colisão com o topo 
-        if self.rect.top<=rolt_t: 
-            if self.velocidade_y<0:
-                rol=-self.delta_y
-        self.rect.x+=self.delta_x
-        self.rect.y+=self.delta_y
-        self.delta_x=0 # mudança da coordenada x
-        self.delta_y=0 #mudança da coordenada y
-'''
