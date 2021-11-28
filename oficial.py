@@ -1,10 +1,11 @@
+
 import os
 import sys
 import pygame
 from pygame.locals import*
 import random
 import time
-from constantes import* 
+
 JUMP_STEP = 15  #tamanho do pulo
 # função que irá fazer a atualização de texto na tela
 def altera_tela(texto, fonte, t, x,y): 
@@ -30,7 +31,7 @@ class Gelatina(pygame.sprite.Sprite):
         self.energy = JUMP_STEP
     def update(self):
         self.rect.y+=-self.energy
-        self.energy -=1.2 #impulso que leva a gelatina a cair 
+        self.energy -=1.1 #impulso que leva a gelatina a cair age como a gravidade
         #chega se não passa da tela 
         if self.rect.right > larg-10: 
             self.rect.right =larg -10
@@ -83,7 +84,7 @@ class Colher(pygame.sprite.Sprite):
         self.alt=75
         self.rect=pygame.Rect(0,0,self.larg, self.alt) #define o tamanho do retangulo 
         self.rect.x==0
-        self.speed=3
+        self.speed=3  #velocidade com que se movimenta 
         self.rect.y=random.randint(0,larg)
         self.rect.center=(self.rect.x,self.rect.y)  #define a posição em que a colher ira aparecer na tela 
     def update(self): 
@@ -91,7 +92,23 @@ class Colher(pygame.sprite.Sprite):
         self.rect.y+=2
         if self.rect.right>larg+50: #checa se a colher saiu 
             self.kill()
-    
+class Vidas(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.list=[]
+        for i in range(3): 
+            img=coracoes.subsurface((i*32,0), (32,32))
+            img=pygame.transform.scale(img, (120,120))
+            self.list.append(img)
+        self.index_lista=0
+        self.image=self.list[self.index_lista]
+        self.rect=self.image.get_rect()
+        self.rect.center= (50,50)
+    def update(self): 
+        if self.index_lista>2: 
+            self.index_lista=0
+        self.index_lista+=0.25
+        self.image=self.list[int(self.index_lista)]
 pygame.init()
 pygame.mixer.init()
 #cores 
@@ -133,9 +150,13 @@ imagem_fundo=pygame.transform.scale(imagem_fundo, (larg, alt))
 imagem_chao=pygame.image.load(os.path.join(direct_imag, "plat.png")).convert_alpha()
 imagem_colher=pygame.image.load(os.path.join(direct_imag, "colher.png")).convert_alpha()
 imagem_plataforma=pygame.image.load(os.path.join(direct_imag,'prato.png')).convert_alpha()
+coracoes=pygame.image.load(os.path.join(direct_imag, 'coracoes.png'))
+
 plataforma_grupo=pygame.sprite.Group() #cria grupo das plataformas
 clock=pygame.time.Clock() #velocidade de processamento
+
 todas =pygame.sprite.Group()
+
 velo_nova=1
 gelatina=Gelatina(larg/2,alt-150) #define a posição que a gelatina vai iniciar o jogo
 todas.add(gelatina)
@@ -149,17 +170,20 @@ chao=Chao(100,imagem_chao)
 #colher=Colher()
 #todas.add(colher)
 game_over=False 
-
+cora=Vidas()
+todas.add(cora)
 pos=100
 #criando plataformas iniciais
 plataforma_grupo.add(chao)
 rol = 0
 #Loop principal
+teste=1
 
-colher=Colher(imagem_colher)
-all_colheres.add(colher) 
+'''colher=Colher(imagem_colher)
+all_colheres.add(colher) '''
 
 game=True
+
 while game:
     clock.tick(60) #o jogo não vai rodar mais rapido que 60 FPS por segundo 
  
@@ -171,8 +195,7 @@ while game:
             sys.exit()
                 # permitindo movimentação pelo teclado
       # permite a movimentação da geleia pelas setas 
-   
-   
+    
     key = pygame.key.get_pressed()
     if key[pygame.K_RIGHT]:
         gelatina.rect.x += 8 #mudar esse numero se quiser que ela ande mais ou menos rápido
@@ -196,9 +219,12 @@ while game:
             # chao.rect.y+=10 #atualiza posição vertical da plataforma
         rol = hit.rect.y
     hits2 = pygame.sprite.spritecollide(gelatina,all_colheres,False,pygame.sprite.collide_mask)
+    list=[]
     for hit2 in hits2: 
+        list.append(hit2)
         som_queda.play()
         colher.kill()
+      
     #muda a cor do fundo caso ultapasse um certo score 
     if score >100: 
             imagem_fundo=pygame.image.load(os.path.join(direct_imag, 'fundo2.jpg')).convert() #criando a imagem de fundo
@@ -225,7 +251,13 @@ while game:
             score+=1
         plataforma = Plataformas(plat_x,plat_y,plat_larg)
         plataforma_grupo.add(plataforma)
-    
+    if len(all_colheres)<1: 
+        print ('teste')
+    x=10
+    if score ==x: 
+        all_colheres=pygame.sprite.Group() 
+        colher=Colher(imagem_colher)
+        all_colheres.add(colher) 
     #gelatina.move()
         # ajusta o limite superior de gelatina
     #all_colheres.update()
@@ -251,5 +283,5 @@ while game:
          
     all_colheres.draw(tela)
     todas.draw(tela)
-    
+ 
     pygame.display.update()
