@@ -113,7 +113,7 @@ class Vidas(pygame.sprite.Sprite):
         self.image=self.list[int(self.index_lista)] 
         if game_over==True: 
            self.kill()
-        
+
 pygame.init()
 pygame.mixer.init()
 #cores 
@@ -259,9 +259,7 @@ while game:
             som_queda.play()
             lives-=1
             colher.kill()
-            #vidas.sprites()[0].remove()
-            #gelatina.move()
-            # ajusta o limite superior de gelatina
+            vidas.sprites()[0].kill()
         #all_colheres.update()
         cont=f'Score: {score}'
         contador=fonte.render(cont, True, (255,255,255))
