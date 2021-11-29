@@ -222,13 +222,13 @@ while game:
             rol = hit.rect.y
         
         #muda a cor do fundo caso ultapasse um certo score 
-        if score >100: 
+        if score >50: 
                 imagem_fundo=pygame.image.load(os.path.join(direct_imag, 'fundo2.jpg')).convert() #criando a imagem de fundo
                 imagem_fundo=pygame.transform.scale(imagem_fundo, (larg, alt))
-        if score>150: 
+        if score>100: 
             imagem_fundo=pygame.image.load(os.path.join(direct_imag, 'fundo3.jpg')).convert() #criando a imagem de fundo
             imagem_fundo=pygame.transform.scale(imagem_fundo, (larg, alt))
-        if score>500: 
+        if score>200: 
             imagem_fundo=pygame.image.load(os.path.join(direct_imag, 'fundo4.jpg')).convert() #criando a imagem de fundo
             imagem_fundo=pygame.transform.scale(imagem_fundo, (larg, alt))
         #desenha o fundo
@@ -249,20 +249,20 @@ while game:
             plataforma_grupo.add(plataforma)
         for a in range(50):
             x=random.randrange(0,200,5) 
-        if score ==x:
-            all_colheres=pygame.sprite.Group() 
-            colher=Colher(imagem_colher)
-            all_colheres.add(colher)
+        if score>=25 and random.randint(1,100)==8:
+            if len(all_colheres)==0: 
+                colher=Colher(imagem_colher)
+                all_colheres.add(colher)
         hits2 = pygame.sprite.spritecollide(gelatina,all_colheres,False,pygame.sprite.collide_mask)
         list=[]
 
         for hit2 in hits2: 
             list.append(hit2)
-            #cora.kill()
+            cora.kill()
             som_queda.play()
             lives-=1
             colher.kill()
-            vidas.sprites()
+            #vidas.sprites()[0].remove()
             #gelatina.move()
             # ajusta o limite superior de gelatina
         #all_colheres.update()
@@ -287,11 +287,12 @@ while game:
         altera_tela("GAME OVER!", fonte2, (preto),  95, 280)
         altera_tela(f"Score: {score}", fonte2, (preto),  135, 360)
         altera_tela("Press space to play again", fonte3, (preto),  25, 440)
-        
+        key = pygame.key.get_pressed()
         if key[pygame.K_SPACE]:
             game_over==False
             score=0
-    
+            
+
     for event in eventos: 
         if event.type==pygame.QUIT:
             pygame.quit() #permitindo que se feche a janela
