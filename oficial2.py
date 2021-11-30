@@ -118,6 +118,27 @@ class Vidas(pygame.sprite.Sprite):
         self.image=self.list[int(self.index_lista)] 
         if game_over==True: 
            self.kill()
+def tela_over(): 
+    tela.blit(imagem_fundo, (0,0))
+    
+    tela.blit(fundo_fim, (0,0))  
+    tela.blit(fall1, (150,100))
+    altera_tela("GAME OVER!", fonte2, (preto),  95, 280)
+    altera_tela(f"Score: {score}", fonte2, (preto),  135, 360)
+    altera_tela("Press space to play again", fonte3, (preto),  25, 440)
+    pygame.time.delay(500)
+    pygame.display.flip()
+    aguardando =True
+    while aguardando: 
+        for event in pygame.event.get(): 
+            if event.type==pygame.QUIT: 
+                pygame.quit()
+            if event.type==pygame.KEYUP: 
+                if event.key==K_SPACE: 
+                    aguardando=False 
+    key = pygame.key.get_pressed()
+    if key[pygame.K_SPACE]:
+        game_over=False
 
 pygame.init()
 pygame.mixer.init()
@@ -268,18 +289,10 @@ while game:
         vidas.draw(tela)
         vidas.update()
     else:
-        gelatina.kill()
-
-        tela.blit(fundo_fim, (0,0))
-        tela.blit(fall1, (150,100))
-        altera_tela("GAME OVER!", fonte2, (preto),  95, 280)
-        altera_tela(f"Score: {score}", fonte2, (preto),  135, 360)
-        altera_tela("Press space to play again", fonte3, (preto),  25, 440)
-        key = pygame.key.get_pressed()
-        if key[pygame.K_SPACE]:
-            game_over=False
-           
-   
+        tela_over()
+        score=0
+        game_over=False
+        
 
     #todas.draw(tela)
 
