@@ -3,7 +3,7 @@ import os
 import sys
 import pygame
 from pygame.locals import*
-from config import larg, JUMP_STEP, alt, rol, preto, max, im_fundo_rol, pos, rosa
+from versoes.config import larg, JUMP_STEP, alt, rol, preto, max, im_fundo_rol, pos, rosa
 import random
 import time
 
@@ -140,8 +140,9 @@ def tela_over():
 def tela_de_inicio(): 
     tela.blit(fundo_inicio, (0,0)) 
     altera_tela("Gelatin Jumping", fonte2, (preto), 50,250)
-    altera_tela("Press space to play", fonte3, (preto), 60,350)
+    altera_tela("Press space to play", fonte3, (preto), 60,400)
     altera_tela("Desenvolvido por:", fonte, (preto), 120,560)
+    altera_tela("To move use the right and left keys", fonte4, (preto), 30,350)
     altera_tela("Tainá Bonfim", fonte4, (preto), 150,595)
     altera_tela("Ana Beatriz Ferreira ", fonte4, (preto), 100,620)
 
@@ -252,13 +253,13 @@ while game:
                 rol = hit.rect.y
             
             #muda a cor do fundo caso ultapasse um certo score 
-            if score >50: 
+            if score >30: 
                     imagem_fundo=pygame.image.load(os.path.join(direct_imag, 'fundo2.jpg')).convert() #criando a imagem de fundo
                     imagem_fundo=pygame.transform.scale(imagem_fundo, (larg, alt))
-            if score>100: 
+            if score>50: 
                 imagem_fundo=pygame.image.load(os.path.join(direct_imag, 'fundo3.jpg')).convert() #criando a imagem de fundo
                 imagem_fundo=pygame.transform.scale(imagem_fundo, (larg, alt))
-            if score>200: 
+            if score>100: 
                 imagem_fundo=pygame.image.load(os.path.join(direct_imag, 'fundo4.jpg')).convert() #criando a imagem de fundo
                 imagem_fundo=pygame.transform.scale(imagem_fundo, (larg, alt))
             #desenha o fundo
