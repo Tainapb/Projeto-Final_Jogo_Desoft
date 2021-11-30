@@ -268,6 +268,8 @@ while game:
         vidas.draw(tela)
         vidas.update()
     else:
+        gelatina.kill()
+
         tela.blit(fundo_fim, (0,0))
         tela.blit(fall1, (150,100))
         altera_tela("GAME OVER!", fonte2, (preto),  95, 280)
@@ -276,12 +278,7 @@ while game:
         key = pygame.key.get_pressed()
         if key[pygame.K_SPACE]:
             game_over=False
-            score=0
-            rol=0
-            plataforma_grupo.update()
-            todas.update()
-            todas.draw(tela)
-
+           
    
 
     #todas.draw(tela)
