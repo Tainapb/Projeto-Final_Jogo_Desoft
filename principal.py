@@ -72,6 +72,9 @@ class Game:
 
 
     def tela_inicio(self):
+        #pygame.mixer.music.load(os.path.join(self.direct_sons,constantes.musica_abertura)
+        #pygame.mixer.mmusic.play()
+
         self.logo_inicio(constantes.larg/2,20)
         
         self.draw_texto('Pressione uma tecla para jogar',32,constantes.preto,constantes.larg/2,320)
@@ -89,6 +92,8 @@ class Game:
                     self.rodando = False
                 if event.type == pygame.KEYUP:
                     espera = False
+                    #pygame.mixer.music.stop()
+                    #pygame.mixer.Sound(os.path.join(self.direct_sons,constantes.inicio_tecla)).play()
 
     def tela_gameover(self):
         pass
