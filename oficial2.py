@@ -3,7 +3,7 @@ import os
 import sys
 import pygame
 from pygame.locals import*
-from config import larg, JUMP_STEP, alt, rol, preto, max, im_fundo_rol, pos
+from config import larg, JUMP_STEP, alt, rol, preto, max, im_fundo_rol, pos, rosa
 import random
 import time
 
@@ -119,8 +119,6 @@ class Vidas(pygame.sprite.Sprite):
         if game_over==True: 
            self.kill()
 def tela_over(): 
-    tela.blit(imagem_fundo, (0,0))
-    
     tela.blit(fundo_fim, (0,0))  
     tela.blit(fall1, (150,100))
     altera_tela("GAME OVER!", fonte2, (preto),  95, 280)
@@ -138,15 +136,32 @@ def tela_over():
                     aguardando=False 
     key = pygame.key.get_pressed()
     if key[pygame.K_SPACE]:
-        game_over=False
-
+        game_over==False
+def tela_de_inicio(): 
+    tela.blit(fundo_inicio, (0,0)) 
+    altera_tela("Gelatin Jumping", fonte2, (preto), larg//2, alt//2)
+    pygame.time.delay(500)
+    pygame.display.flip()
+    teste =True
+    while teste: 
+        for event in pygame.event.get(): 
+            if event.type==pygame.QUIT: 
+                pygame.quit()
+            if event.type==pygame.KEYUP: 
+                if event.key==K_SPACE: 
+                    teste=False 
+    key = pygame.key.get_pressed()
+    if key[pygame.K_SPACE]:
+        vai==False
+        game_over==False 
+        
 pygame.init()
 pygame.mixer.init()
 
 #carregando os sons do jogo 
-som_pulo = pygame.mixer.Sound('musics/pulo.wav')
-som_queda = pygame.mixer.Sound('musics/queda1.wav')
-som_colher=pygame.mixer.Sound('musics/colher.wav')
+som_pulo = pygame.mixer.Sound('Projeto-final/musics/pulo.wav')
+som_queda = pygame.mixer.Sound('Projeto-final/musics/queda1.wav')
+som_colher=pygame.mixer.Sound('Projeto-final/musics/colher.wav')
 #definindo as fontes do texto 
 fonte=pygame.font.SysFont("inkfree", 25, bold=True, italic=True )  # vai definir a fonte do texto que aparecerá na tela 
 fonte2=pygame.font.SysFont("inkfree", 40, bold=True, italic=True )
@@ -172,7 +187,8 @@ imagem_chao=pygame.image.load(os.path.join(direct_imag, "plat.png")).convert_alp
 imagem_colher=pygame.image.load(os.path.join(direct_imag, "colher.png")).convert_alpha()
 imagem_plataforma=pygame.image.load(os.path.join(direct_imag,'prato.png')).convert_alpha()
 coracoes=pygame.image.load(os.path.join(direct_imag, 'coracoes.png'))
-
+fundo_i= pygame.image.load(os.path.join(direct_imag, "jellyjump.png" )).convert_alpha()
+fundo_inicio=pygame.transform.scale(fundo_f, (larg, alt))
 plataforma_grupo=pygame.sprite.Group() #cria grupo das plataformas
 clock=pygame.time.Clock() #velocidade de processamento
 
@@ -195,106 +211,107 @@ plataforma_grupo.add(chao)
 for i in range(lives+1):
     cora=Vidas(i*50,50)
     vidas.add(cora)  
-
+tela_de_inicio()
 game=True
-
+vai =True
 while game:
     clock.tick(60) #o jogo não vai rodar mais rapido que 60 FPS por segundo 
     eventos=pygame.event.get() #retorna uma lista com os comandos que o usuário fez no teclado 
-    for event in eventos: 
-        if event.type==pygame.QUIT:
-            pygame.quit() #permitindo que se feche a janela
-            sys.exit()          
-    if game_over==False: 
-        # permitindo movimentação pelo teclado
-        # permite a movimentação da geleia pelas setas 
-        key = pygame.key.get_pressed()
-        if key[pygame.K_RIGHT]:
-            gelatina.rect.x += 8 #mudar esse numero se quiser que ela ande mais ou menos rápido
-            gelatina.flip = False
-        if key[pygame.K_LEFT]:
-            gelatina.rect.x -= 8  #mudar esse numero se quiser que ela ande mais ou menos rápido
-            gelatina.flip = True
-        # ajusta o limite superior de gelatina
-        if gelatina.rect.y < alt // 2:
-            gelatina.rect.y = alt // 2
-            for obs in plataforma_grupo.sprites():
-                obs.rect.y += JUMP_STEP
-        
-        hits = pygame.sprite.spritecollide(gelatina,plataforma_grupo,False,pygame.sprite.collide_mask)
-        for hit in hits:  
-            gelatina.jump()
-            som_pulo.play()
-        
-                # chao.rect.y+=10 #atualiza posição vertical da plataforma
-            rol = hit.rect.y
-        
-        #muda a cor do fundo caso ultapasse um certo score 
-        if score >50: 
-                imagem_fundo=pygame.image.load(os.path.join(direct_imag, 'fundo2.jpg')).convert() #criando a imagem de fundo
+    if vai ==True: 
+        for event in eventos: 
+            if event.type==pygame.QUIT:
+                pygame.quit() #permitindo que se feche a janela
+                sys.exit()          
+        if game_over==False: 
+            # permitindo movimentação pelo teclado
+            # permite a movimentação da geleia pelas setas 
+            key = pygame.key.get_pressed()
+            if key[pygame.K_RIGHT]:
+                gelatina.rect.x += 8 #mudar esse numero se quiser que ela ande mais ou menos rápido
+                gelatina.flip = False
+            if key[pygame.K_LEFT]:
+                gelatina.rect.x -= 8  #mudar esse numero se quiser que ela ande mais ou menos rápido
+                gelatina.flip = True
+            # ajusta o limite superior de gelatina
+            if gelatina.rect.y < alt // 2:
+                gelatina.rect.y = alt // 2
+                for obs in plataforma_grupo.sprites():
+                    obs.rect.y += JUMP_STEP
+            
+            hits = pygame.sprite.spritecollide(gelatina,plataforma_grupo,False,pygame.sprite.collide_mask)
+            for hit in hits:  
+                gelatina.jump()
+                som_pulo.play()
+            
+                    # chao.rect.y+=10 #atualiza posição vertical da plataforma
+                rol = hit.rect.y
+            
+            #muda a cor do fundo caso ultapasse um certo score 
+            if score >50: 
+                    imagem_fundo=pygame.image.load(os.path.join(direct_imag, 'fundo2.jpg')).convert() #criando a imagem de fundo
+                    imagem_fundo=pygame.transform.scale(imagem_fundo, (larg, alt))
+            if score>100: 
+                imagem_fundo=pygame.image.load(os.path.join(direct_imag, 'fundo3.jpg')).convert() #criando a imagem de fundo
                 imagem_fundo=pygame.transform.scale(imagem_fundo, (larg, alt))
-        if score>100: 
-            imagem_fundo=pygame.image.load(os.path.join(direct_imag, 'fundo3.jpg')).convert() #criando a imagem de fundo
-            imagem_fundo=pygame.transform.scale(imagem_fundo, (larg, alt))
-        if score>200: 
-            imagem_fundo=pygame.image.load(os.path.join(direct_imag, 'fundo4.jpg')).convert() #criando a imagem de fundo
-            imagem_fundo=pygame.transform.scale(imagem_fundo, (larg, alt))
-        #desenha o fundo
-        im_fundo_rol+=rol
-        if im_fundo_rol>=600: #altura
-            im_fundo_rol=0
-        draw_fundo(im_fundo_rol)
-        #cria plataformas
-        if len(plataforma_grupo)<max:
-            plat_larg = random.randint(40,60) #30,50 ou 40,60
-            plat_x = random.randint(0,larg-plat_larg-60)  #define o intervalo em que a plataforma pode aparecer no eixo x
-            if len(plataforma_grupo) == 1:
-                plat_y = 500    #esse número define a posição em que as plataformas vão começar a aparecer 
-            else:
-                plat_y = plataforma_grupo.sprites()[-1].rect.y - 140 #esse número define o espaçamento entre as plataformas
-                score+=1
-            plataforma = Plataformas(plat_x,plat_y,plat_larg)
-            plataforma_grupo.add(plataforma)
-        for a in range(50):
-            x=random.randrange(0,200,5) 
-        if score>=25 and random.randint(1,100)==8:
-            if len(all_colheres)==0: 
-                colher=Colher(imagem_colher)
-                all_colheres.add(colher)
-        hits2 = pygame.sprite.spritecollide(gelatina,all_colheres,False,pygame.sprite.collide_mask)
-        list=[]
+            if score>200: 
+                imagem_fundo=pygame.image.load(os.path.join(direct_imag, 'fundo4.jpg')).convert() #criando a imagem de fundo
+                imagem_fundo=pygame.transform.scale(imagem_fundo, (larg, alt))
+            #desenha o fundo
+            im_fundo_rol+=rol
+            if im_fundo_rol>=600: #altura
+                im_fundo_rol=0
+            draw_fundo(im_fundo_rol)
+            #cria plataformas
+            if len(plataforma_grupo)<max:
+                plat_larg = random.randint(40,60) #30,50 ou 40,60
+                plat_x = random.randint(0,larg-plat_larg-60)  #define o intervalo em que a plataforma pode aparecer no eixo x
+                if len(plataforma_grupo) == 1:
+                    plat_y = 500    #esse número define a posição em que as plataformas vão começar a aparecer 
+                else:
+                    plat_y = plataforma_grupo.sprites()[-1].rect.y - 140 #esse número define o espaçamento entre as plataformas
+                    score+=1
+                plataforma = Plataformas(plat_x,plat_y,plat_larg)
+                plataforma_grupo.add(plataforma)
+            for a in range(50):
+                x=random.randrange(0,200,5) 
+            if score>=25 and random.randint(1,100)==8:
+                if len(all_colheres)==0: 
+                    colher=Colher(imagem_colher)
+                    all_colheres.add(colher)
+            hits2 = pygame.sprite.spritecollide(gelatina,all_colheres,False,pygame.sprite.collide_mask)
+            list=[]
 
-        for hit2 in hits2: 
-            list.append(hit2)
-            cora.kill()
-            som_colher.play()
-            lives-=1
-            colher.kill()
-            vidas.sprites()[0].kill()
-        #all_colheres.update()
-        cont=f'Score: {score}'
-        contador=fonte.render(cont, True, (255,255,255))
-        tela.blit(imagem_fundo, (0,0))
-        tela.blit(contador, (310,40))
-        plataforma_grupo.draw(tela)
-        plataforma_grupo.update() #atualiza plataforma
-        #all_colheres.draw(tela)
-        all_colheres.update()
-        if gelatina.rect.bottom >alt+150    or lives ==0:
-            game_over=True 
-            som_queda.play()
-        todas.update()
-        all_colheres.draw(tela)
-        todas.draw(tela)
-        vidas.draw(tela)
-        vidas.update()
-    else:
-        tela_over()
-        score=0
-        game_over=False
-        
+            for hit2 in hits2: 
+                list.append(hit2)
+                cora.kill()
+                som_colher.play()
+                lives-=1
+                colher.kill()
+                vidas.sprites()[0].kill()
+            #all_colheres.update()
+            cont=f'Score: {score}'
+            contador=fonte.render(cont, True, (255,255,255))
+            tela.blit(imagem_fundo, (0,0))
+            tela.blit(contador, (310,40))
+            plataforma_grupo.draw(tela)
+            plataforma_grupo.update() #atualiza plataforma
+            #all_colheres.draw(tela)
+            all_colheres.update()
+            if gelatina.rect.bottom >alt+150    or lives ==0:
+                game_over=True 
+                som_queda.play()
+            todas.update()
+            all_colheres.draw(tela)
+            todas.draw(tela)
+            vidas.draw(tela)
+            vidas.update()
+        else:
+            tela_over()
+            score=0
+            game_over=False
 
-    #todas.draw(tela)
+
+        #todas.draw(tela)
 
     pygame.display.update()
 
