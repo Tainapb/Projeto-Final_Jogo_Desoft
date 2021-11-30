@@ -3,7 +3,6 @@ import os
 import sys
 import pygame
 from pygame.locals import*
-from versoes.config import larg, JUMP_STEP, alt, rol, preto, max, im_fundo_rol, pos, rosa
 import random
 import time
 
@@ -164,6 +163,24 @@ def tela_de_inicio():
 pygame.init()
 pygame.mixer.init()
 
+JUMP_STEP = 15  #tamanho do pulo
+#cores 
+cinza =(127,127,127)
+rosa=(200, 0, 100)
+preto=(0,0,0)
+#dimensões
+larg=450
+alt=650
+
+score=0
+lives=3
+
+rol=0    #rolagem
+im_fundo_rol=0  #rolagem da imagem de fundo
+rolt_t=200   #velocidade de subida do fundo
+max=5#limite de plataformas
+
+pos=100
 #carregando os sons do jogo 
 som_pulo = pygame.mixer.Sound('musics/pulo.wav')
 som_queda = pygame.mixer.Sound('musics/queda1.wav')
