@@ -139,7 +139,12 @@ def tela_over():
         game_over==False
 def tela_de_inicio(): 
     tela.blit(fundo_inicio, (0,0)) 
-    altera_tela("Gelatin Jumping", fonte2, (preto), larg//2, alt//2)
+    altera_tela("Gelatin Jumping", fonte2, (preto), 50,250)
+    altera_tela("Press space to play", fonte3, (preto), 60,350)
+    altera_tela("Desenvolvido por:", fonte, (preto), 120,560)
+    altera_tela("Tainá Bonfim", fonte4, (preto), 150,595)
+    altera_tela("Ana Beatriz Ferreira ", fonte4, (preto), 100,620)
+
     pygame.time.delay(500)
     pygame.display.flip()
     teste =True
@@ -159,14 +164,14 @@ pygame.init()
 pygame.mixer.init()
 
 #carregando os sons do jogo 
-som_pulo = pygame.mixer.Sound('Projeto-final/musics/pulo.wav')
-som_queda = pygame.mixer.Sound('Projeto-final/musics/queda1.wav')
-som_colher=pygame.mixer.Sound('Projeto-final/musics/colher.wav')
+som_pulo = pygame.mixer.Sound('musics/pulo.wav')
+som_queda = pygame.mixer.Sound('musics/queda1.wav')
+som_colher=pygame.mixer.Sound('musics/colher.wav')
 #definindo as fontes do texto 
 fonte=pygame.font.SysFont("inkfree", 25, bold=True, italic=True )  # vai definir a fonte do texto que aparecerá na tela 
 fonte2=pygame.font.SysFont("inkfree", 40, bold=True, italic=True )
 fonte3=pygame.font.SysFont("inkfree", 30, bold=True, italic=True )
-
+fonte4=pygame.font.SysFont("inkfree", 20, bold=True, italic=True )
   # vai definir a fonte   do texto que aparecerá na tela 
 #variaveis 
 
@@ -188,7 +193,7 @@ imagem_colher=pygame.image.load(os.path.join(direct_imag, "colher.png")).convert
 imagem_plataforma=pygame.image.load(os.path.join(direct_imag,'prato.png')).convert_alpha()
 coracoes=pygame.image.load(os.path.join(direct_imag, 'coracoes.png'))
 fundo_i= pygame.image.load(os.path.join(direct_imag, "inicio.jpg" )).convert_alpha()
-fundo_inicio=pygame.transform.scale(fundo_f, (larg, alt))
+fundo_inicio=pygame.transform.scale(fundo_i, (larg, alt))
 plataforma_grupo=pygame.sprite.Group() #cria grupo das plataformas
 clock=pygame.time.Clock() #velocidade de processamento
 
