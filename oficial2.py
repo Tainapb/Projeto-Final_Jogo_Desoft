@@ -3,7 +3,7 @@ import os
 import sys
 import pygame
 from pygame.locals import*
-from config import larg, JUMP_STEP, alt, score, lives, rol, preto, max, im_fundo_rol, pos
+from config import larg, JUMP_STEP, alt, rol, preto, max, im_fundo_rol, pos
 import random
 import time
 
@@ -40,6 +40,7 @@ class Gelatina(pygame.sprite.Sprite):
             self.rect.left=-10
         if game_over==True: 
             self.kill()
+            self.rect.center=(x, alt-120)
     def draw(self):
         tela.blit(pygame.transform.flip(self.image, self.flip, False),(self.rect.x-12, self.rect.y-5))
         pygame.draw.rect(tela,(255,255,255), self.rect, 2)
@@ -56,7 +57,7 @@ class Chao(pygame.sprite.Sprite):
     def update(self): 
         if  self.rect.topright[0]<0: 
             self.rect.x=larg
-        if self.rect.top>alt: #checa se a plataforma saiu da tela
+        if self.rect.top>alt or game_over==True: #checa se a plataforma saiu da tela
             self.kill()  # deleta a plataforma da memoria    
     def move(self, delta):
         self.rect.y += delta
@@ -69,9 +70,12 @@ class Plataformas(pygame.sprite.Sprite):
         self.rect.x = x
         self.rect.y = y
         self.flip=False
+        if game_over==True: 
+            self.kill() 
     def update(self): 
         if self.rect.top>alt: #checa se a plataforma saiu da tela
-            self.kill()  # deleta a plataforma da memoria    
+            self.kill() # deleta a plataforma da memoria    
+        
     def most(self):
         tela.blit(pygame.transform.flip(self.image, self.flip, False),(self.rect.x-12, self.rect.y-5))
         pygame.draw.rect(tela,(255,255,255), self.rect, 2)    
@@ -82,7 +86,7 @@ class Colher(pygame.sprite.Sprite):
     def __init__(self, img):
         pygame.sprite.Sprite.__init__(self)
         self.image=img
-        self.image=pygame.transform.scale(img, (100,100)) #definindo o tamanho da geleia
+        self.image=pygame.transform.scale(img, (105,105)) #definindo o tamanho da geleia
         self.larg=80
         self.alt=75
         self.rect=pygame.Rect(0,0,self.larg, self.alt) #define o tamanho do retangulo 
@@ -152,7 +156,8 @@ plataforma_grupo=pygame.sprite.Group() #cria grupo das plataformas
 clock=pygame.time.Clock() #velocidade de processamento
 
 todas =pygame.sprite.Group()
-
+score=0  #o score começa em zero 
+lives=3  #quantidade de vidas 
 velo_nova=1
 gelatina=Gelatina(larg/2,alt-150) #define a posição que a gelatina vai iniciar o jogo
 todas.add(gelatina)
@@ -174,7 +179,11 @@ game=True
 
 while game:
     clock.tick(60) #o jogo não vai rodar mais rapido que 60 FPS por segundo 
-    eventos=pygame.event.get() #retorna uma lista com os comandos que o usuário fez no teclado   
+    eventos=pygame.event.get() #retorna uma lista com os comandos que o usuário fez no teclado 
+    for event in eventos: 
+        if event.type==pygame.QUIT:
+            pygame.quit() #permitindo que se feche a janela
+            sys.exit()          
     if game_over==False: 
         # permitindo movimentação pelo teclado
         # permite a movimentação da geleia pelas setas 
@@ -266,14 +275,14 @@ while game:
         altera_tela("Press space to play again", fonte3, (preto),  25, 440)
         key = pygame.key.get_pressed()
         if key[pygame.K_SPACE]:
-            game_over==False
+            game_over=False
             score=0
             rol=0
-           
-    for event in eventos: 
-        if event.type==pygame.QUIT:
-            pygame.quit() #permitindo que se feche a janela
-            sys.exit()        
+            plataforma_grupo.update()
+            todas.update()
+            todas.draw(tela)
+
+   
 
     #todas.draw(tela)
 
