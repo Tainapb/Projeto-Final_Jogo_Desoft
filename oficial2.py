@@ -144,7 +144,7 @@ def tela_de_inicio():
     altera_tela("To move use the right and left keys", fonte4, (preto), 30,350)
     altera_tela("Tainá Bonfim", fonte4, (preto), 150,595)
     altera_tela("Ana Beatriz Ferreira ", fonte4, (preto), 100,620)
-
+    som_ambiente.play()
     pygame.time.delay(500)
     pygame.display.flip()
     teste =True
@@ -155,6 +155,7 @@ def tela_de_inicio():
             if event.type==pygame.KEYUP: 
                 if event.key==K_SPACE: 
                     teste=False 
+                    som_ambiente.stop()
     key = pygame.key.get_pressed()
     if key[pygame.K_SPACE]:
         vai==False
@@ -185,6 +186,7 @@ pos=100
 som_pulo = pygame.mixer.Sound('musics/pulo.wav')
 som_queda = pygame.mixer.Sound('musics/queda1.wav')
 som_colher=pygame.mixer.Sound('musics/colher.wav')
+som_ambiente=pygame.mixer.Sound('musics/ambiente.mp3')
 #definindo as fontes do texto 
 fonte=pygame.font.SysFont("inkfree", 25, bold=True, italic=True )  # vai definir a fonte do texto que aparecerá na tela 
 fonte2=pygame.font.SysFont("inkfree", 40, bold=True, italic=True )
