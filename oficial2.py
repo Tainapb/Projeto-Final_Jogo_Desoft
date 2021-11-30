@@ -123,6 +123,7 @@ preto=(0,0,0)
 #carregando os sons do jogo 
 som_pulo = pygame.mixer.Sound('musics/pulo.wav')
 som_queda = pygame.mixer.Sound('musics/queda1.wav')
+som_colher=pygame.mixer.Sound('musics/colher.wav')
 #definindo as fontes do texto 
 fonte=pygame.font.SysFont("inkfree", 25, bold=True, italic=True )  # vai definir a fonte do texto que aparecerá na tela 
 fonte2=pygame.font.SysFont("inkfree", 40, bold=True, italic=True )
@@ -256,7 +257,7 @@ while game:
         for hit2 in hits2: 
             list.append(hit2)
             cora.kill()
-            som_queda.play()
+            som_colher.play()
             lives-=1
             colher.kill()
             vidas.sprites()[0].kill()
@@ -271,6 +272,7 @@ while game:
         all_colheres.update()
         if gelatina.rect.bottom >alt+150    or lives ==0:
             game_over=True 
+            som_queda.play()
         todas.update()
         all_colheres.draw(tela)
         todas.draw(tela)
@@ -286,8 +288,6 @@ while game:
         if key[pygame.K_SPACE]:
             game_over==False
             score=0
-            
-
     for event in eventos: 
         if event.type==pygame.QUIT:
             pygame.quit() #permitindo que se feche a janela

@@ -96,7 +96,7 @@ rosa=(200, 0, 100)
 preto=(0,0,0)
 
 #carregando os sons do jogo 
-som_pulo = pygame.mixer.Sound('Projeto-final/musics/pulo.wav')
+som_pulo = pygame.mixer.Sound('musics/pulo.wav')
 
 #definindo as fontes do texto 
 fonte=pygame.font.SysFont("inkfree", 25, bold=True, italic=True )  # vai definir a fonte do texto que aparecerá na tela 

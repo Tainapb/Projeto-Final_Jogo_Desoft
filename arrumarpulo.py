@@ -114,7 +114,7 @@ pygame.mixer.init()
 #cores 
 cinza =(127,127,127)
 rosa=(200, 0, 100)
-som_pulo = pygame.mixer.Sound('pulo.wav')
+som_pulo = pygame.mixer.Sound('musics/pulo.wav')
 #dimensões
 larg=450
 alt=650

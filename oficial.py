@@ -116,8 +116,8 @@ cinza =(127,127,127)
 rosa=(200, 0, 100)
 preto=(0,0,0)
 #carregando os sons do jogo 
-som_pulo = pygame.mixer.Sound('Projeto-final/musics/pulo.wav')
-som_queda = pygame.mixer.Sound('Projeto-final/musics/queda1.wav')
+som_pulo = pygame.mixer.Sound('musics/pulo.wav')
+som_queda = pygame.mixer.Sound('musics/queda1.wav')
 #definindo as fontes do texto 
 fonte=pygame.font.SysFont("inkfree", 25, bold=True, italic=True )  # vai definir a fonte do texto que aparecerá na tela 
 fonte2=pygame.font.SysFont("inkfree", 40, bold=True, italic=True )
