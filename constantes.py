@@ -43,3 +43,7 @@ imagem_chao=pygame.image.load(os.path.join(direct_imag, "plat.png")).convert_alp
 imagem_colher=pygame.image.load(os.path.join(direct_imag, "colher.png")).convert_alpha()
 imagem_plataforma=pygame.image.load(os.path.join(direct_imag,'prato.png')).convert_alpha()
 coracoes=pygame.image.load(os.path.join(direct_imag, 'coracoes.png'))
+
+
+#musica_abertura=
+#inicio_tecla=
