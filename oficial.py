@@ -130,7 +130,6 @@ score=0
 
   # vai definir a fonte   do texto que aparecerá na tela 
 #variaveis 
-rol=0    #rolagem
 im_fundo_rol=0  #rolagem da imagem de fundo
 rolt_t=200   #velocidade de subida do fundo
 max=5#limite de plataformas
@@ -177,7 +176,7 @@ pos=100
 plataforma_grupo.add(chao)
 rol = 0
 #Loop principal
-teste=1
+
 
 '''colher=Colher(imagem_colher)
 all_colheres.add(colher) '''

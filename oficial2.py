@@ -3,10 +3,11 @@ import os
 import sys
 import pygame
 from pygame.locals import*
+from config import larg, JUMP_STEP, alt, score, lives, rol, preto, max, im_fundo_rol, pos
 import random
 import time
 
-JUMP_STEP = 15  #tamanho do pulo
+
 # função que irá fazer a atualização de texto na tela
 def altera_tela(texto, fonte, t, x,y): 
     image=fonte.render(texto, True, t)
@@ -116,10 +117,7 @@ class Vidas(pygame.sprite.Sprite):
 
 pygame.init()
 pygame.mixer.init()
-#cores 
-cinza =(127,127,127)
-rosa=(200, 0, 100)
-preto=(0,0,0)
+
 #carregando os sons do jogo 
 som_pulo = pygame.mixer.Sound('musics/pulo.wav')
 som_queda = pygame.mixer.Sound('musics/queda1.wav')
@@ -128,18 +126,10 @@ som_colher=pygame.mixer.Sound('musics/colher.wav')
 fonte=pygame.font.SysFont("inkfree", 25, bold=True, italic=True )  # vai definir a fonte do texto que aparecerá na tela 
 fonte2=pygame.font.SysFont("inkfree", 40, bold=True, italic=True )
 fonte3=pygame.font.SysFont("inkfree", 30, bold=True, italic=True )
-#dimensões
-larg=450
-alt=650
-score=0
-lives=3
 
   # vai definir a fonte   do texto que aparecerá na tela 
 #variaveis 
-rol=0    #rolagem
-im_fundo_rol=0  #rolagem da imagem de fundo
-rolt_t=200   #velocidade de subida do fundo
-max=5#limite de plataformas
+
 #permite acesso as fotos na pasta imagens 
 diret=os.path.dirname(__file__)
 direct_imag=os.path.join(diret,"imagens")
@@ -169,21 +159,11 @@ todas.add(gelatina)
 
 
 all_colheres=pygame.sprite.Group()
-#colher=Colher(x,y)
-#todas.add(colher)
-#criando chão 
 chao=Chao(100,imagem_chao)
-#colher=Colher()
-#todas.add(colher)
 game_over=False 
-
 vidas=pygame.sprite.Group()
-
-
-pos=100
 #criando plataformas iniciais
 plataforma_grupo.add(chao)
-rol = 0
 #Loop principal
 
 for i in range(lives+1):
@@ -288,6 +268,8 @@ while game:
         if key[pygame.K_SPACE]:
             game_over==False
             score=0
+            rol=0
+           
     for event in eventos: 
         if event.type==pygame.QUIT:
             pygame.quit() #permitindo que se feche a janela
