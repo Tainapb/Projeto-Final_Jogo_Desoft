@@ -5,11 +5,6 @@ from pygame.locals import*
 import random
 import time
 
-# função que irá fazer a atualização de texto na tela
-def altera_tela(texto, fonte, t, x,y): 
-    image=fonte.render(texto, True, t)
-    tela.blit(image, (x,y))
-
 #classe da gelatina/jogador principal 
 class Gelatina(pygame.sprite.Sprite): 
     def __init__(self,x,y):
@@ -50,6 +45,7 @@ class Gelatina(pygame.sprite.Sprite):
         pygame.draw.rect(tela,(255,255,255), self.rect, 2)
     def move(self):   #define a movimentação da gelatina 
         self.delta_y+=self.velocidade_y
+
 #classe que cria o chão para a gelatina não ficar voando antes de iniciar nas plataformas
 class Chao(pygame.sprite.Sprite): 
     def __init__(self, posicao_x, imagem): 
@@ -66,6 +62,7 @@ class Chao(pygame.sprite.Sprite):
             self.kill()  # deleta a plataforma da memoria    
     def move(self, delta):
         self.rect.y += delta
+
 #classe das plataformas que será onde a gelatina irá pular
 class Plataformas(pygame.sprite.Sprite): 
     def __init__(self, x, y, larg ): 
@@ -119,6 +116,12 @@ class Vidas(pygame.sprite.Sprite):  #classe que define a quantidade de vidas da 
         self.image=self.list[int(self.index_lista)] 
         if game_over==True: 
            self.kill()  #se o game over acontecer as vidas vão sumir da tela 
+
+# função que irá fazer a atualização de texto na tela
+def altera_tela(texto, fonte, t, x,y): 
+    image=fonte.render(texto, True, t)
+    tela.blit(image, (x,y))
+
 def tela_over():   #função que cria a tela de game over 
     tela.blit(fundo_fim, (0,0))  #definindo a imagem de fundo 
     tela.blit(fall1, (150,100))   #desenhando a gelatina "morta" na tela
@@ -171,14 +174,18 @@ def tela_de_inicio(): #função que cria a tela de inicio
         vai==False
         game_over==False 
         
+
+#inicializa pygame
 pygame.init()
 pygame.mixer.init()
 
 JUMP_STEP = 15  #tamanho do pulo
+
 #cores 
 cinza =(127,127,127)
 rosa=(200, 0, 100)
 preto=(0,0,0)
+
 #dimensões
 larg=450 #largura 
 alt=650 #altura 
@@ -188,11 +195,13 @@ rolt_t=200  #velocidade de subida do fundo
 max=5 #limite de plataformas
 pos=100  #posiçaõ inicial 
 velo_nova=1
+
 #carregando os sons do jogo 
 som_pulo = pygame.mixer.Sound('musics/pulo.wav')
 som_queda = pygame.mixer.Sound('musics/queda1.wav')
 som_colher=pygame.mixer.Sound('musics/colher.wav')
 som_ambiente=pygame.mixer.Sound('musics/ambiente.mp3')
+
 #definindo as fontes do texto 
 fonte=pygame.font.SysFont("inkfree", 25, bold=True, italic=True )  # vai definir a fonte do texto que aparecerá na tela 
 fonte2=pygame.font.SysFont("inkfree", 40, bold=True, italic=True )
@@ -202,6 +211,7 @@ fonte4=pygame.font.SysFont("inkfree", 20, bold=True, italic=True )
 #permite acesso as fotos na pasta imagens 
 diret=os.path.dirname(__file__)
 direct_imag=os.path.join(diret,"imagens")
+
 #carrengando as sprites que serão utilizadas no jogo
 tela=pygame.display.set_mode((larg, alt)) #criando a tela principal
 image_geleia= pygame.image.load(os.path.join(direct_imag, "geleia.png" )).convert_alpha()
@@ -219,24 +229,24 @@ coracoes=pygame.image.load(os.path.join(direct_imag, 'coracoes.png'))
 fundo_i= pygame.image.load(os.path.join(direct_imag, "inicio.jpg" )).convert_alpha()
 fundo_inicio=pygame.transform.scale(fundo_i, (larg, alt))
 gelatin=pygame.image.load(os.path.join(direct_imag, 'g2.png'))
-plataforma_grupo=pygame.sprite.Group() #cria grupo das plataformas
+
 clock=pygame.time.Clock() #velocidade de processamento
 
+plataforma_grupo=pygame.sprite.Group() #cria grupo das plataformas
 todas =pygame.sprite.Group()  #grupo que armazena algumas sprites 
-
 gelatina=Gelatina(larg/2,alt-150) #define a posição que a gelatina vai iniciar o jogo
 todas.add(gelatina)
 all_colheres=pygame.sprite.Group() #grupo que armazena as colheres 
 chao=Chao(100,imagem_chao)
-game_over=False 
 vidas=pygame.sprite.Group() #grupo que armazena as vidas 
-#criando plataformas iniciais
-plataforma_grupo.add(chao)
-#Loop principal
+plataforma_grupo.add(chao) #adicionando chão como primeira plataforma
 
 for i in range(lives+1):
     cora=Vidas(i*50,50)
     vidas.add(cora)  
+
+#Loop principal
+game_over=False 
 tela_de_inicio()  #chamando a tela de inicio 
 game=True
 vai =True   #define se o jogo deve se iniciar 
