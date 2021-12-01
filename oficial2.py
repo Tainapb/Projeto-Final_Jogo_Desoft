@@ -139,6 +139,7 @@ def tela_over():   #função que cria a tela de game over
         game_over==False
 def tela_de_inicio(): #função que cria a tela de inicio 
     tela.blit(fundo_inicio, (0,0)) 
+    tela.blit(estrela, (150,100))
     altera_tela("Gelatin Jumping", fonte2, (preto), 50,250)
     altera_tela("Press space to play", fonte3, (preto), 60,400)
     altera_tela("Desenvolvido por:", fonte, (preto), 120,560)
@@ -210,6 +211,8 @@ imagem_colher=pygame.image.load(os.path.join(direct_imag, "colher.png")).convert
 imagem_plataforma=pygame.image.load(os.path.join(direct_imag,'prato.png')).convert_alpha()
 coracoes=pygame.image.load(os.path.join(direct_imag, 'coracoes.png'))
 fundo_i= pygame.image.load(os.path.join(direct_imag, "inicio.jpg" )).convert_alpha()
+estre= pygame.image.load(os.path.join(direct_imag, "teste.png" )).convert_alpha()
+estrela = pygame.transform.scale(estre, (150,120))
 fundo_inicio=pygame.transform.scale(fundo_i, (larg, alt))
 plataforma_grupo=pygame.sprite.Group() #cria grupo das plataformas
 clock=pygame.time.Clock() #velocidade de processamento
