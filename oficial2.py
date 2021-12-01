@@ -12,10 +12,6 @@ def altera_tela(texto, fonte, t, x,y):
     image=fonte.render(texto, True, t)
     tela.blit(image, (x,y))
 
-def draw_fundo(im_fundo_rol): 
-    tela.blit(imagem_fundo, (0,0+im_fundo_rol))
-    tela.blit(imagem_fundo, (0,-600+im_fundo_rol))
-
 #classe da gelatina/jogador principal 
 class Gelatina(pygame.sprite.Sprite): 
     def __init__(self,x,y):
@@ -139,11 +135,11 @@ def tela_over():   #função que cria a tela de game over
         game_over==False
 def tela_de_inicio(): #função que cria a tela de inicio 
     tela.blit(fundo_inicio, (0,0)) 
-    tela.blit(estrela, (150,100))
+    tela.blit(image_geleia, (150,100))
     altera_tela("Gelatin Jumping", fonte2, (preto), 50,250)
     altera_tela("Press space to play", fonte3, (preto), 60,400)
     altera_tela("Desenvolvido por:", fonte, (preto), 120,560)
-    altera_tela("Use the right and left keys to move", fonte4, (preto), 30,350)
+    altera_tela("To move use the right and left keys", fonte4, (preto), 30,350)
     altera_tela("Tainá Bonfim", fonte4, (preto), 150,595)
     altera_tela("Ana Beatriz Ferreira ", fonte4, (preto), 100,620)
     som_ambiente.play()
@@ -176,8 +172,6 @@ larg=450
 alt=650
 score=0 #score inicial 
 lives=3 #quantidade de vidas 
-rol=0    #rolagem
-im_fundo_rol=0  #rolagem da imagem de fundo
 rolt_t=200   #velocidade de subida do fundo
 max=5#limite de plataformas
 pos=100  #posiçaõ inicial 
@@ -211,9 +205,9 @@ imagem_colher=pygame.image.load(os.path.join(direct_imag, "colher.png")).convert
 imagem_plataforma=pygame.image.load(os.path.join(direct_imag,'prato.png')).convert_alpha()
 coracoes=pygame.image.load(os.path.join(direct_imag, 'coracoes.png'))
 fundo_i= pygame.image.load(os.path.join(direct_imag, "inicio.jpg" )).convert_alpha()
-estre= pygame.image.load(os.path.join(direct_imag, "teste.png" )).convert_alpha()
-estrela = pygame.transform.scale(estre, (150,120))
 fundo_inicio=pygame.transform.scale(fundo_i, (larg, alt))
+gelatin=pygame.image.load(os.path.join(direct_imag, 'g2.png'))
+
 plataforma_grupo=pygame.sprite.Group() #cria grupo das plataformas
 clock=pygame.time.Clock() #velocidade de processamento
 todas =pygame.sprite.Group()
@@ -246,7 +240,6 @@ while game:
                 pygame.quit() #permitindo que se feche a janela
                 sys.exit()          
         if game_over==False: 
-            # permitindo movimentação pelo teclado
             # permite a movimentação da geleia pelas setas 
             key = pygame.key.get_pressed()
             if key[pygame.K_RIGHT]:
@@ -265,10 +258,7 @@ while game:
             for hit in hits:  
                 gelatina.jump()
                 som_pulo.play()
-            
-                    # chao.rect.y+=10 #atualiza posição vertical da plataforma
-                rol = hit.rect.y
-            
+
             #muda a cor do fundo caso ultapasse um certo score 
             if score >50: 
                     imagem_fundo=pygame.image.load(os.path.join(direct_imag, 'fundo2.jpg')).convert() #criando a imagem de fundo
@@ -279,11 +269,7 @@ while game:
             if score>150: 
                 imagem_fundo=pygame.image.load(os.path.join(direct_imag, 'fundo4.jpg')).convert() #criando a imagem de fundo
                 imagem_fundo=pygame.transform.scale(imagem_fundo, (larg, alt))
-            #desenha o fundo
-            im_fundo_rol+=rol
-            if im_fundo_rol>=600: #altura
-                im_fundo_rol=0
-            draw_fundo(im_fundo_rol)
+    
             #cria plataformas
             if len(plataforma_grupo)<max:
                 plat_larg = random.randint(40,60) #30,50 ou 40,60
@@ -351,8 +337,4 @@ while game:
             imagem_fundo=pygame.transform.scale(imagem_fundo, (larg, alt))
             game_over=False
 
-        #todas.draw(tela)
-
     pygame.display.update()
-
-    
