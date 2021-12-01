@@ -4,7 +4,7 @@ Desenvolvimento de um jogo de computador em Python 3 usando recursos da bibliote
 + Ana Beatriz Parra Ferreira
 + Tainá Pereira Bonfim 
 ## Jogo: Gelatin Jumping
-Para rodar o jogo, inicie o arquivo "[nome do arquivo].py"
+Para rodar o jogo, inicie o arquivo "Oficial.py"
 ## Link do YouTube
 [insere o link aqui]
 
@@ -22,8 +22,9 @@ Jelly é uma gelatina que deseja chegar à Gelatinland, um lugar alto e feliz on
 + Caso a gelatina caia da plataforma, ela perde todas as vidas. 
 + O game over ocorre ao perder todas as vidas.
 ## Músicas:
-Para o desenvolvimento do jogo, os sons foram retirados de
-
+Para o desenvolvimento do jogo, os sons foram retirados dos sites:
++ The Mushroom Kingdom [https://themushroomkingdom.net/media/smw/wav]
++ Free Music Archive [https://freemusicarchive.org/music/BoxCat_Games]
 
 ## Referências:
 + Handout- Academia Python
