@@ -26,6 +26,7 @@ class Gelatina(pygame.sprite.Sprite):
         self.velocidade_y=0  #definição da velocidade 
         self.delta_x = 0
         self.delta_y =0
+        self.rect.center=(x,y) 
         self.jump()  #chamando o pulo 
     def jump(self):
         self.energy = JUMP_STEP  #definindo o puolo
@@ -43,7 +44,7 @@ class Gelatina(pygame.sprite.Sprite):
             self.rect.left=-10
         if game_over==True:   #se o game over aparecer a gelatina é deletada  
             self.kill()
-            
+            #self.rect.center=(x, alt-120)
     def draw(self):  #
         tela.blit(pygame.transform.flip(self.image, self.flip, False),(self.rect.x-12, self.rect.y-5))
         pygame.draw.rect(tela,(255,255,255), self.rect, 2)
@@ -345,5 +346,3 @@ while game:
             game_over=False
 
     pygame.display.update()
-
-    
