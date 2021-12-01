@@ -143,7 +143,7 @@ def tela_de_inicio(): #função que cria a tela de inicio
     altera_tela("Gelatin Jumping", fonte2, (preto), 50,250)
     altera_tela("Press space to play", fonte3, (preto), 60,400)
     altera_tela("Desenvolvido por:", fonte, (preto), 120,560)
-    altera_tela("To move use the right and left keys", fonte4, (preto), 30,350)
+    altera_tela("Use the right and left keys to move", fonte4, (preto), 30,350)
     altera_tela("Tainá Bonfim", fonte4, (preto), 150,595)
     altera_tela("Ana Beatriz Ferreira ", fonte4, (preto), 100,620)
     som_ambiente.play()
