@@ -122,7 +122,7 @@ def tela_over():   #função que cria a tela de game over
     tela.blit(fundo_fim, (0,0))  
     tela.blit(fall1, (150,100))
     altera_tela("GAME OVER!", fonte2, (preto),  95, 280)
-    altera_tela(f"Score: {score}", fonte2, (preto),  135, 360)
+    altera_tela(f"Score: {score}", fonte2, (preto),  125, 360)
     altera_tela("Press space to play again", fonte3, (preto),  25, 440)
     pygame.time.delay(500)
     pygame.display.flip()
