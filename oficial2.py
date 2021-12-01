@@ -349,7 +349,8 @@ while game:
             for i in range(lives+1):
                 cora=Vidas(i*50,50)
                 vidas.add(cora)  
-            
+            imagem_fundo=pygame.image.load(os.path.join(direct_imag, 'fundo.jpg')).convert() #criando a imagem de fundo
+            imagem_fundo=pygame.transform.scale(imagem_fundo, (larg, alt))
             game_over=False
 
         #todas.draw(tela)
