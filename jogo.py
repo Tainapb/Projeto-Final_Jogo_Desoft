@@ -4,9 +4,9 @@ import pygame
 from pygame.locals import*
 import random
 import time
-from funcoes import *
-from config import *
-from classes import *
+
+from config import*
+from classes import*
 
 
 pygame.init()

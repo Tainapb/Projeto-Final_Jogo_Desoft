@@ -4,8 +4,7 @@ import pygame
 from pygame.locals import*
 import random
 import time
-from classes import *
-from funcoes import * 
+
 JUMP_STEP = 15  #tamanho do pulo
 #cores 
 cinza =(127,127,127)
@@ -54,3 +53,5 @@ fundo_i= pygame.image.load(os.path.join(direct_imag, "inicio.jpg" )).convert_alp
 estre= pygame.image.load(os.path.join(direct_imag, "teste.png" )).convert_alpha()
 estrela = pygame.transform.scale(estre, (150,120))
 fundo_inicio=pygame.transform.scale(fundo_i, (larg, alt))
+
+vai=True
