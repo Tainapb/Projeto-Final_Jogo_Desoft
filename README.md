@@ -9,6 +9,7 @@ Para rodar o jogo, inicie o arquivo "[nome do arquivo].py"
 [insere o link aqui]
 
 ## Enredo do jogo:
+Jelly é uma gelatina que deseja chegar à Gelatinland, um lugar alto e feliz onde todas as gelatinas sem o perigo de serem comidas pelos humanos. Mas, para chegar até lá, Jelly precisa subir a imensa jornada por plataformas e desviar das ameaças das colheres. Ajude Jelly a chegar até Gelatinland! 
 
 ## Como jogar:
 + Para iniciar o jogo, clique na barra de espaço.
@@ -21,6 +22,8 @@ Para rodar o jogo, inicie o arquivo "[nome do arquivo].py"
 + Caso a gelatina caia da plataforma, ela perde todas as vidas. 
 + O game over ocorre ao perder todas as vidas.
 ## Músicas:
+Para o desenvolvimento do jogo, os sons foram retirados de
+
 
 ## Referências:
 + Handout- Academia Python
@@ -29,7 +32,3 @@ Para rodar o jogo, inicie o arquivo "[nome do arquivo].py"
 + Canal- João Tinti [https://www.youtube.com/channel/UChjskKGW9ebyuVgNYpEZ92Q]
 + Kids Can Code [http://kidscancode.org]
 + Pygame [https://www.pygame.org/] 
-+ 
-+ 
-+  
-+ 
