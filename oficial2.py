@@ -333,8 +333,24 @@ while game:
         else:
             tela_over()
             score=0
-            game_over=False
+            lives=3
+            velo_nova=1
+            todas =pygame.sprite.Group()
+            plataforma_grupo=pygame.sprite.Group()
+            gelatina=Gelatina(larg/2,alt-150) 
+            todas.add(gelatina)
+            all_colheres=pygame.sprite.Group()
+            chao=Chao(100,imagem_chao)
+            plataforma_grupo.add(chao)
 
+            chao=Chao(100,imagem_chao)
+            vidas=pygame.sprite.Group()
+            plataforma_grupo.add(chao)
+            for i in range(lives+1):
+                cora=Vidas(i*50,50)
+                vidas.add(cora)  
+            
+            game_over=False
 
         #todas.draw(tela)
 
