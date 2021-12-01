@@ -23,3 +23,13 @@ Para rodar o jogo, inicie o arquivo "[nome do arquivo].py"
 ## Músicas:
 
 ## Referências:
++ Handout- Academia Python
++ Coding with Russ [https://www.youtube.com/channel/UCPrRY0S-VzekrJK7I7F4-Mg]
++ Coding with Russ-Jumpy [https://github.com/russs123/Jumpy.git]
++ Canal- João Tinti [https://www.youtube.com/channel/UChjskKGW9ebyuVgNYpEZ92Q]
++ Kids Can Code [http://kidscancode.org]
++ Pygame [https://www.pygame.org/] 
++ 
++ 
++  
++ 
