@@ -11,9 +11,12 @@ import time
 def altera_tela(texto, fonte, t, x,y): 
     image=fonte.render(texto, True, t)
     tela.blit(image, (x,y))
+
 def draw_fundo(im_fundo_rol): 
     tela.blit(imagem_fundo, (0,0+im_fundo_rol))
     tela.blit(imagem_fundo, (0,-600+im_fundo_rol))
+
+#classe da gelatina/jogador principal 
 class Gelatina(pygame.sprite.Sprite): 
     def __init__(self,x,y):
         pygame.sprite.Sprite.__init__(self)
@@ -45,6 +48,7 @@ class Gelatina(pygame.sprite.Sprite):
         pygame.draw.rect(tela,(255,255,255), self.rect, 2)
     def move(self):
         self.delta_y+=self.velocidade_y
+#classe que cria o chão para a gelatina não ficar voando antes de iniciar nas plataformas
 class Chao(pygame.sprite.Sprite): 
     def __init__(self, posicao_x, imagem): 
         pygame.sprite.Sprite.__init__(self)
@@ -60,6 +64,7 @@ class Chao(pygame.sprite.Sprite):
             self.kill()  # deleta a plataforma da memoria    
     def move(self, delta):
         self.rect.y += delta
+#classe das plataformas que será onde a gelatina irá pular
 class Plataformas(pygame.sprite.Sprite): 
     def __init__(self, x, y, larg ): 
         pygame.sprite.Sprite.__init__(self)
@@ -74,34 +79,30 @@ class Plataformas(pygame.sprite.Sprite):
     def update(self): 
         if self.rect.top>alt: #checa se a plataforma saiu da tela
             self.kill() # deleta a plataforma da memoria    
-        
-    def most(self):
-        tela.blit(pygame.transform.flip(self.image, self.flip, False),(self.rect.x-12, self.rect.y-5))
-        pygame.draw.rect(tela,(255,255,255), self.rect, 2)    
-    #def draw(self):
-    #    tela.blit(pygame.transform.flip(self.image, self.flip, False),(self.rect.x-12, self.rect.y-5))
-    #    pygame.draw.rect(tela,(255,255,255), self.rect, 2)    
-class Colher(pygame.sprite.Sprite):
+
+class Colher(pygame.sprite.Sprite): # classe dos inimigos que retirarão a vida da gelatina 
     def __init__(self, img):
         pygame.sprite.Sprite.__init__(self)
         self.image=img
         self.image=pygame.transform.scale(img, (105,105)) #definindo o tamanho da geleia
-        self.larg=80
-        self.alt=75
+        self.larg=80  #largura do retângulo
+        self.alt=75   #altura do retângulo
         self.rect=pygame.Rect(0,0,self.larg, self.alt) #define o tamanho do retangulo 
-        self.rect.x=0
-        self.speed=4  #velocidade com que se movimenta 
-        self.rect.y=random.randint(0,larg)
+        self.rect.x=0 #posição no eixo x
+        self.speed=random.randint(0,5)  #sorteando a velocidade com que se movimenta 
+        self.rect.y=random.randint(0,larg) #sorteando a posição no eixo x que irão aparecer
         self.rect.center=(self.rect.x,self.rect.y)  #define a posição em que a colher ira aparecer na tela 
     def update(self): 
         self.rect.x += 3
         self.rect.y+=self.speed
         if self.rect.right>larg+50: #checa se a colher saiu 
-            self.kill()
-class Vidas(pygame.sprite.Sprite):
+            self.kill() #deleta a colher caso ela saia da tela 
+
+class Vidas(pygame.sprite.Sprite):  #classe que define a quantidade de vidas da gelatina 
     def __init__(self, x, y):
         pygame.sprite.Sprite.__init__(self)
-        self.list=[]
+        #criando uma sprite de movimento 
+        self.list=[]  
         for i in range(3): 
             img=coracoes.subsurface((i*32,0), (32,32))
             img=pygame.transform.scale(img, (120,120))
@@ -116,8 +117,8 @@ class Vidas(pygame.sprite.Sprite):
         self.index_lista+=0.25
         self.image=self.list[int(self.index_lista)] 
         if game_over==True: 
-           self.kill()
-def tela_over(): 
+           self.kill()  #se o game over acontecer as vidas vão sumir da tela 
+def tela_over():   #função que cria a tela de game over 
     tela.blit(fundo_fim, (0,0))  
     tela.blit(fall1, (150,100))
     altera_tela("GAME OVER!", fonte2, (preto),  95, 280)
@@ -136,7 +137,7 @@ def tela_over():
     key = pygame.key.get_pressed()
     if key[pygame.K_SPACE]:
         game_over==False
-def tela_de_inicio(): 
+def tela_de_inicio(): #função que cria a tela de inicio 
     tela.blit(fundo_inicio, (0,0)) 
     altera_tela("Gelatin Jumping", fonte2, (preto), 50,250)
     altera_tela("Press space to play", fonte3, (preto), 60,400)
@@ -172,16 +173,14 @@ preto=(0,0,0)
 #dimensões
 larg=450
 alt=650
-
-score=0
-lives=3
-
+score=0 #score inicial 
+lives=3 #quantidade de vidas 
 rol=0    #rolagem
 im_fundo_rol=0  #rolagem da imagem de fundo
 rolt_t=200   #velocidade de subida do fundo
 max=5#limite de plataformas
-
-pos=100
+pos=100  #posiçaõ inicial 
+velo_nova=1
 #carregando os sons do jogo 
 som_pulo = pygame.mixer.Sound('musics/pulo.wav')
 som_queda = pygame.mixer.Sound('musics/queda1.wav')
@@ -192,9 +191,7 @@ fonte=pygame.font.SysFont("inkfree", 25, bold=True, italic=True )  # vai definir
 fonte2=pygame.font.SysFont("inkfree", 40, bold=True, italic=True )
 fonte3=pygame.font.SysFont("inkfree", 30, bold=True, italic=True )
 fonte4=pygame.font.SysFont("inkfree", 20, bold=True, italic=True )
-  # vai definir a fonte   do texto que aparecerá na tela 
-#variaveis 
-
+ 
 #permite acesso as fotos na pasta imagens 
 diret=os.path.dirname(__file__)
 direct_imag=os.path.join(diret,"imagens")
@@ -216,11 +213,9 @@ fundo_i= pygame.image.load(os.path.join(direct_imag, "inicio.jpg" )).convert_alp
 fundo_inicio=pygame.transform.scale(fundo_i, (larg, alt))
 plataforma_grupo=pygame.sprite.Group() #cria grupo das plataformas
 clock=pygame.time.Clock() #velocidade de processamento
-
 todas =pygame.sprite.Group()
-score=0  #o score começa em zero 
-lives=3  #quantidade de vidas 
-velo_nova=1
+
+
 gelatina=Gelatina(larg/2,alt-150) #define a posição que a gelatina vai iniciar o jogo
 todas.add(gelatina)
 
@@ -272,13 +267,13 @@ while game:
                 rol = hit.rect.y
             
             #muda a cor do fundo caso ultapasse um certo score 
-            if score >30: 
+            if score >50: 
                     imagem_fundo=pygame.image.load(os.path.join(direct_imag, 'fundo2.jpg')).convert() #criando a imagem de fundo
                     imagem_fundo=pygame.transform.scale(imagem_fundo, (larg, alt))
-            if score>50: 
+            if score>100: 
                 imagem_fundo=pygame.image.load(os.path.join(direct_imag, 'fundo3.jpg')).convert() #criando a imagem de fundo
                 imagem_fundo=pygame.transform.scale(imagem_fundo, (larg, alt))
-            if score>100: 
+            if score>150: 
                 imagem_fundo=pygame.image.load(os.path.join(direct_imag, 'fundo4.jpg')).convert() #criando a imagem de fundo
                 imagem_fundo=pygame.transform.scale(imagem_fundo, (larg, alt))
             #desenha o fundo
